@@ -1,4 +1,5 @@
-export const APP_NAME = 'Excel App Sync';
-export const DEFAULT_SHEET = 'Лист1';
-export const DEFAULT_RANGE = 'A1:ZZ20';
-export const POLL_INTERVAL_MS = 30000;
+export const APP_NAME = 'AquaPrime';
+export const INTRO_DURATION_MS = 3500;
+export const DEFAULT_SHEET = 'աշխատող';
+export const DEFAULT_RANGE = '';
+export const POLL_INTERVAL_MS = 15000;

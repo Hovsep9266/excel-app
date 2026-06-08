@@ -1,4 +1,9 @@
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:4000';
+const API_BASE_URL =
+  process.env.REACT_APP_API_BASE_URL !== undefined
+    ? process.env.REACT_APP_API_BASE_URL
+    : process.env.NODE_ENV === 'production'
+      ? ''
+      : 'http://localhost:4000';
 
 class ExcelApiError extends Error {
   constructor(message, statusCode, code) {
@@ -32,7 +37,8 @@ async function fetchJson(url) {
 }
 
 export async function getExcelRange({ sheet, range }) {
-  const params = new URLSearchParams({ sheet, range, _ts: String(Date.now()) });
+  const params = new URLSearchParams({ sheet, _ts: String(Date.now()) });
+  if (range) params.set('range', range);
   const requestUrl = `${API_BASE_URL}/api/excel/range?${params.toString()}`;
 
   const { response, data } = await fetchJson(requestUrl);

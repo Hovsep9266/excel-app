@@ -3,6 +3,6 @@ import App from './App';
 
 test('renders app title', () => {
   render(<App />);
-  const titleElement = screen.getByText(/excel app/i);
+  const titleElement = screen.getByText(/aquaprime/i);
   expect(titleElement).toBeInTheDocument();
 });

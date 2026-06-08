@@ -1,4 +1,8 @@
 const crypto = require('crypto');
+const fs = require('fs');
+const path = require('path');
+
+const TOKEN_FILE = path.join(__dirname, '.auth-tokens.json');
 
 const tokenCache = {
   accessToken: '',
@@ -8,6 +12,40 @@ const tokenCache = {
   state: '',
   stateExpiresAt: 0,
 };
+
+function loadTokenCache() {
+  try {
+    const raw = fs.readFileSync(TOKEN_FILE, 'utf8');
+    const saved = JSON.parse(raw);
+    if (!saved || typeof saved !== 'object') return;
+
+    tokenCache.accessToken = saved.accessToken || '';
+    tokenCache.refreshToken = saved.refreshToken || '';
+    tokenCache.expiresAt = Number(saved.expiresAt || 0);
+    tokenCache.account = saved.account || null;
+  } catch (error) {
+    // Ignore missing or invalid token cache.
+  }
+}
+
+function persistTokenCache() {
+  try {
+    fs.writeFileSync(
+      TOKEN_FILE,
+      JSON.stringify({
+        accessToken: tokenCache.accessToken,
+        refreshToken: tokenCache.refreshToken,
+        expiresAt: tokenCache.expiresAt,
+        account: tokenCache.account,
+      }),
+      'utf8'
+    );
+  } catch (error) {
+    // Ignore token persistence failures.
+  }
+}
+
+loadTokenCache();
 
 function createAuthError(message, statusCode = 500, code = 'AUTH_ERROR') {
   const error = new Error(message);
@@ -95,10 +133,11 @@ function saveTokens(payload) {
   const claims = payload.id_token ? decodeJwtPayload(payload.id_token) : null;
   tokenCache.account = claims
     ? {
-        name: claims.name || '',
-        username: claims.preferred_username || claims.upn || '',
-      }
+      name: claims.name || '',
+      username: claims.preferred_username || claims.upn || '',
+    }
     : tokenCache.account;
+  persistTokenCache();
 }
 
 async function handleAuthCallback({ code, state }) {

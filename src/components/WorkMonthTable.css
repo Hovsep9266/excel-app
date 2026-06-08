@@ -1,0 +1,144 @@
+.work-table-wrap {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  max-height: 100%;
+  margin: 0;
+  border-radius: 10px;
+  border: 1px solid rgba(125, 211, 252, 0.2);
+  background: rgba(15, 23, 42, 0.58);
+  backdrop-filter: blur(6px);
+  box-sizing: border-box;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.work-table-wrap::-webkit-scrollbar {
+  display: none;
+}
+
+.work-month-section + .work-month-section {
+  border-top: 1px solid rgba(125, 211, 252, 0.15);
+}
+
+.work-month-section {
+  padding: 16px;
+  box-sizing: border-box;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.work-table-x-scroll {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  box-sizing: border-box;
+}
+
+.work-table-x-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.work-month-table {
+  border-collapse: collapse;
+  table-layout: auto;
+  border: 2px solid rgba(125, 211, 252, 0.35);
+  width: max-content;
+  min-width: 100%;
+}
+
+.work-month-table th,
+.work-month-table td {
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  padding: 8px 10px;
+  min-width: 42px;
+  text-align: center;
+  font-size: 0.88rem;
+  white-space: nowrap;
+}
+
+.work-month-table thead th {
+  background: rgba(0, 0, 0, 0.55);
+  color: #e2e8f0;
+  font-weight: 600;
+}
+
+.work-month-name {
+  min-width: 88px;
+  text-align: left;
+}
+
+.work-row-label {
+  min-width: 88px;
+  text-align: left;
+  background: rgba(0, 0, 0, 0.48);
+  color: #cbd5e1;
+  font-weight: 600;
+}
+
+.work-day-head {
+  min-width: 36px;
+}
+
+.work-total-head {
+  min-width: 56px;
+  border-left: 2px solid rgba(125, 211, 252, 0.45);
+}
+
+.work-month-table tbody td.work-total-cell {
+  background: rgba(0, 0, 0, 0.55);
+  color: #e2e8f0;
+  font-weight: 700;
+  border-left: 2px solid rgba(125, 211, 252, 0.45);
+}
+
+.work-month-table tbody td {
+  background: rgba(15, 23, 42, 0.44);
+  color: #f1f5f9;
+}
+
+.work-cell-empty {
+  background: rgba(15, 23, 42, 0.28);
+}
+
+.work-amount-row .work-row-label,
+.work-amount-row td {
+  border-top: 1px solid rgba(125, 211, 252, 0.25);
+}
+
+.work-table-wrap .empty-text {
+  margin: 0;
+  padding: 20px;
+  color: #94a3b8;
+}
+
+@media (max-width: 767px) {
+  .work-table-wrap {
+    backdrop-filter: none;
+    background: rgba(15, 23, 42, 0.82);
+  }
+
+  .work-month-section {
+    padding: 16px;
+  }
+
+  .work-month-table th,
+  .work-month-table td {
+    padding: 6px 7px;
+    min-width: 34px;
+    font-size: 0.78rem;
+  }
+
+  .work-month-name,
+  .work-row-label {
+    min-width: 72px;
+  }
+}

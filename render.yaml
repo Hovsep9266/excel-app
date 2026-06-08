@@ -1,0 +1,28 @@
+# Deploy on Render.com: https://render.com
+# New → Blueprint → connect this repo, or Web Service with these settings.
+
+services:
+  - type: web
+    name: aquaprime
+    runtime: node
+    plan: starter
+    buildCommand: npm install && npm --prefix server install && npm run build
+    startCommand: npm run start:prod
+    healthCheckPath: /api/excel/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: EXCEL_SOURCE
+        value: hybrid
+      - key: EXCEL_LOCAL_PATH
+        value: ""
+      - key: EXCEL_DEFAULT_SHEET
+        value: աշխատող
+      - key: EXCEL_DEFAULT_RANGE
+        value: ""
+      - key: PORT
+        value: "4000"
+      - key: EXCEL_SHARE_URL
+        sync: false
+      - key: FRONTEND_URL
+        sync: false

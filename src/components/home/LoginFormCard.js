@@ -50,7 +50,7 @@ function LoginFormCard({
             )}
           </button>
         </div>
-        <button className="retry-btn" type="submit">
+        <button className="auth-submit-btn" type="submit">
           {t('loginButton')}
         </button>
       </form>

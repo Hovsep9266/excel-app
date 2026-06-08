@@ -1,15 +1,20 @@
 .profile-modal {
   position: fixed;
   z-index: 2101;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   width: min(560px, 92vw);
   border-radius: 16px;
   border: 1px solid rgba(125, 211, 252, 0.25);
   background: rgba(15, 23, 42, 0.85);
   backdrop-filter: blur(10px);
   overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .profile-modal {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 }
 
 .profile-modal-header {
@@ -49,7 +54,6 @@
     bottom: 0;
     left: 0;
     right: 0;
-    transform: none;
     width: 100%;
     max-width: 100%;
     border-radius: 16px 16px 0 0;

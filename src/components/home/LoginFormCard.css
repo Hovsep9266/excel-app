@@ -19,15 +19,16 @@
   color: #f1f5f9;
   border-radius: 0;
   padding: 10px;
+  transition: border-color 0.5s;
 }
 
+.auth-form input:hover,
 .auth-form input:focus,
 .auth-form input:focus-visible {
   outline: none;
   box-shadow: none;
   border: none;
   border-bottom: 1px solid #ffffff;
-  transition: 0.5s;
 }
 
 .password-field {
@@ -53,19 +54,45 @@
   color: #ffffff;
 }
 
-.auth-card .retry-btn {
+/* Кнопка «Войти» — отдельно, визуально как поле input */
+.auth-card .auth-submit-btn {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
   border: none;
   border-bottom: 1px solid rgba(148, 163, 184, 0.72);
   background: transparent;
+  color: #f1f5f9;
   border-radius: 0;
-  padding: 10px 0;
+  padding: 10px;
+  font: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  text-align: center;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  backdrop-filter: none;
+  box-shadow: none;
+  transition: border-color 0.5s;
 }
 
-.auth-card .retry-btn:hover {
-  background: transparent;
-  color: #ffffff;
+.auth-card .auth-submit-btn:hover,
+.auth-card .auth-submit-btn:focus,
+.auth-card .auth-submit-btn:focus-visible {
+  outline: none;
+  box-shadow: none;
+  border: none;
   border-bottom: 1px solid #ffffff;
-  transition: 0.5s;
+  background: transparent;
+  color: #f1f5f9;
+}
+
+.auth-card .auth-submit-btn:active {
+  border: none;
+  border-bottom: 1px solid #ffffff;
+  background: transparent;
 }
 
 @media (min-width: 1200px) {
@@ -93,6 +120,11 @@
   }
 
   .auth-form input {
+    font-size: 0.98rem;
+    padding: 10px 2px;
+  }
+
+  .auth-card .auth-submit-btn {
     font-size: 0.98rem;
     padding: 10px 2px;
   }

@@ -18,6 +18,9 @@
     "start:client": "react-scripts start",
     "start:server": "npm --prefix server run dev",
     "build": "react-scripts build",
+    "build:prod": "npm run build",
+    "start:prod": "cross-env NODE_ENV=production node server/index.js",
+    "deploy:local": "npm run build:prod && npm run start:prod",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -26,6 +29,9 @@
       "react-app",
       "react-app/jest"
     ]
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
   },
   "browserslist": {
     "production": [

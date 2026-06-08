@@ -1,6 +1,6 @@
 .site-footer {
   margin-top: auto;
-  margin-bottom: 50px;
+  margin-bottom: 0;
   padding: 14px 16px;
   border-radius: 14px;
   border: 1px solid rgba(125, 211, 252, 0.22);
@@ -11,6 +11,11 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+  flex-shrink: 0;
+}
+
+.app-container--logged-in .site-footer {
+  margin-top: 20px;
 }
 
 .site-footer-left {
@@ -38,5 +43,9 @@
   .site-footer {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .app-container--logged-in .site-footer {
+    margin-top: 16px;
   }
 }

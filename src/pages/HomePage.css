@@ -1,17 +1,20 @@
 .app-shell {
-  background-image: url("https://images.template.net/222766/darkness-background-edit-online.jpg");
-  background-size: cover;
-  background-position: center;
+  position: relative;
+  isolation: isolate;
   height: 100vh;
+  height: 100dvh;
   background-color: #0f172a;
   color: #e2e8f0;
   padding: 40px 20px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
 }
 
 .app-container {
+  position: relative;
+  z-index: 1;
   width: 100%;
   max-width: 100%;
   margin: 0;
@@ -22,15 +25,31 @@
   min-height: 0;
 }
 
+.logged-page {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
 .logged-layout {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 14px;
-  align-items: start;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .table-area {
+  flex: 1;
   min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .menu-area {
@@ -56,6 +75,10 @@
 
 .logged-layout .table-wrap {
   margin: 0;
+}
+
+.logged-status {
+  flex-shrink: 0;
 }
 
 .clickme-button {
@@ -86,14 +109,12 @@
 @media (min-width: 768px) and (max-width: 1199px) {
   .app-shell {
     padding: 24px 16px;
-    background-position: center top;
   }
 }
 
 @media (max-width: 767px) {
   .app-shell {
     padding: 14px 10px;
-    background-position: center top;
   }
 
   .app-container {
@@ -101,9 +122,13 @@
   }
 
   .logged-layout {
-    display: flex;
-    flex-direction: column;
     gap: 12px;
+  }
+
+  .logged-status {
+    order: -2;
+    margin-bottom: 10px;
+    flex-shrink: 0;
   }
 
   .menu-area {
@@ -115,6 +140,8 @@
     z-index: 1;
     justify-content: stretch;
     order: -1;
+    margin-bottom: 4px;
+    flex-shrink: 0;
   }
 
   .menu-area .clickme-button {

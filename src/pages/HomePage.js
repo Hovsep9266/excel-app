@@ -1,10 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
 import './HomePage.css';
+import '../styles/data-display.css';
+import AppWindBackground from '../components/home/AppWindBackground';
 import AppLoggedHeader from '../components/home/AppLoggedHeader';
 import AuthLoadingOverlay from '../components/home/AuthLoadingOverlay';
 import IntroOverlay from '../components/home/IntroOverlay';
 import LoginFormCard from '../components/home/LoginFormCard';
 import ProfileModal from '../components/home/ProfileModal';
+import RulesModal from '../components/home/RulesModal';
 import UserMenuModal from '../components/home/UserMenuModal';
 import SiteFooterBar from '../components/home/SiteFooterBar';
 import UserDataSection from '../components/home/UserDataSection';
@@ -19,6 +22,7 @@ function HomePage() {
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
+  const [rulesOpen, setRulesOpen] = useState(false);
   const [languagePickOpen, setLanguagePickOpen] = useState(false);
 
   const currentLangLabel = useMemo(() => {
@@ -26,13 +30,16 @@ function HomePage() {
   }, [languageOptions, lang]);
 
   useEffect(() => {
-    if (!menuOpen) return;
+    if (!menuOpen && !profileOpen && !rulesOpen) return;
     const onKeyDown = (e) => {
-      if (e.key === 'Escape') setMenuOpen(false);
+      if (e.key !== 'Escape') return;
+      if (rulesOpen) setRulesOpen(false);
+      else if (profileOpen) setProfileOpen(false);
+      else setMenuOpen(false);
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [menuOpen]);
+  }, [menuOpen, profileOpen, rulesOpen]);
 
   useEffect(() => {
     if (!menuOpen) setLanguagePickOpen(false);
@@ -42,14 +49,16 @@ function HomePage() {
     auth.handleLogout();
     setMenuOpen(false);
     setProfileOpen(false);
+    setRulesOpen(false);
     setLanguagePickOpen(false);
   };
 
   return (
     <main className="app-shell">
+      <AppWindBackground />
       <AuthLoadingOverlay visible={auth.showAuthLoading && !auth.currentUser} loadingText={t('loading')} />
       <IntroOverlay visible={auth.showIntro} />
-      <div className="app-container">
+      <div className={`app-container${auth.currentUser ? ' app-container--logged-in' : ''}`}>
         {!auth.currentUser ? (
           !auth.showAuthLoading ? (
             <LoginFormCard
@@ -65,10 +74,12 @@ function HomePage() {
             />
           ) : null
         ) : (
-          <>
+          <div className="logged-page">
             <AppLoggedHeader t={t} />
             <div className="logged-layout">
-              <UserDataSection statusText={statusText} errorMessage={errorMessage} userRows={auth.userRows} />
+              <p className={errorMessage ? 'status-text error logged-status' : 'status-text logged-status'}>
+                {statusText}
+              </p>
               <aside className="menu-area">
                 <button
                   className="clickme-button"
@@ -80,6 +91,7 @@ function HomePage() {
                   {t('clickMe')}
                 </button>
               </aside>
+              <UserDataSection userMonthBlocks={auth.userMonthBlocks} />
             </div>
 
             <UserMenuModal
@@ -89,6 +101,12 @@ function HomePage() {
               t={t}
               onProfile={() => {
                 setProfileOpen(true);
+                setMenuOpen(false);
+                setRulesOpen(false);
+                setLanguagePickOpen(false);
+              }}
+              onRules={() => {
+                setRulesOpen(true);
                 setMenuOpen(false);
                 setLanguagePickOpen(false);
               }}
@@ -110,7 +128,9 @@ function HomePage() {
               currentUser={auth.currentUser}
               currentLangLabel={currentLangLabel}
             />
-          </>
+
+            <RulesModal t={t} open={rulesOpen} onClose={() => setRulesOpen(false)} />
+          </div>
         )}
         <SiteFooterBar t={t} />
       </div>

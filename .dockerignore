@@ -1,0 +1,9 @@
+node_modules
+server/node_modules
+build
+.git
+.env
+server/.env
+server/.auth-tokens.json
+*.log
+coverage

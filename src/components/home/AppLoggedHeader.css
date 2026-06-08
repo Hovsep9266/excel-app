@@ -3,6 +3,7 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 20px;
+  flex-shrink: 0;
 }
 
 .app-header-copy {

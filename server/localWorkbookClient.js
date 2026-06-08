@@ -94,22 +94,62 @@ function toMatrix(values) {
 }
 
 async function getWorksheetRangeFromLocalFile({ sheet, range }) {
-  const workbook = await readLocalWorkbook();
+  const workbookPath = getLocalWorkbookPath();
+  let fileBuffer;
+  let stats;
+  try {
+    [fileBuffer, stats] = await Promise.all([
+      fs.readFile(workbookPath),
+      fs.stat(workbookPath),
+    ]);
+  } catch (error) {
+    if (error.code === 'ENOENT') {
+      throw createLocalError(
+        `Workbook file was not found: ${workbookPath}`,
+        404,
+        'LOCAL_FILE_NOT_FOUND'
+      );
+    }
+    throw createLocalError(
+      `Cannot read workbook file: ${workbookPath}`,
+      500,
+      'LOCAL_FILE_READ_FAILED'
+    );
+  }
+
+  let workbook;
+  try {
+    workbook = XLSX.read(fileBuffer, { type: 'buffer' });
+  } catch (error) {
+    throw createLocalError(
+      `Workbook content is invalid or unsupported: ${path.basename(workbookPath)}`,
+      400,
+      'LOCAL_FILE_INVALID'
+    );
+  }
+
   const worksheet = workbook.Sheets[sheet];
   if (!worksheet) {
     throw createLocalError(`Worksheet "${sheet}" was not found in workbook.`, 404, 'LOCAL_SHEET_NOT_FOUND');
   }
 
+  const effectiveRange = String(range || '').trim() || worksheet['!ref'] || 'A1:AP1000';
+
   try {
     const values = XLSX.utils.sheet_to_json(worksheet, {
       header: 1,
-      range,
+      range: effectiveRange,
       blankrows: true,
       raw: false,
     });
-    return toMatrix(values);
+    return {
+      ...toMatrix(values),
+      range: effectiveRange,
+      fileLastModifiedAt: stats.mtime.toISOString(),
+      filePath: workbookPath,
+    };
   } catch (error) {
-    throw createLocalError(`Invalid range "${range}" for worksheet "${sheet}".`, 400, 'LOCAL_INVALID_RANGE');
+    throw createLocalError(`Invalid range "${effectiveRange}" for worksheet "${sheet}".`, 400, 'LOCAL_INVALID_RANGE');
   }
 }
 

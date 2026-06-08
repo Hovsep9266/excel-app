@@ -8,6 +8,7 @@ function UserMenuModal({
   userName,
   t,
   onProfile,
+  onRules,
   onLogout,
   languagePickOpen,
   onToggleLanguagePick,
@@ -38,6 +39,10 @@ function UserMenuModal({
 
           <button className="user-menu-modal-row" type="button" onClick={onProfile}>
             {t('menuProfile')}
+          </button>
+
+          <button className="user-menu-modal-row" type="button" onClick={onRules}>
+            {t('menuRules')}
           </button>
 
           <div className="user-menu-modal-section">

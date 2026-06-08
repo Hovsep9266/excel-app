@@ -1,0 +1,419 @@
+.app-wind-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.app-wind-bg-slides {
+  position: absolute;
+  inset: -10%;
+}
+
+.app-wind-bg-slide {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: 50% 42%;
+  background-repeat: no-repeat;
+  opacity: 0;
+  will-change: opacity, transform, background-position;
+  animation:
+    wind-bg-slide-fade var(--slide-cycle, 40s) ease-in-out infinite,
+    wind-bg-drift 52s ease-in-out infinite alternate;
+  animation-delay: var(--slide-delay, 0s), 0s;
+}
+
+.app-wind-bg-slide:first-child {
+  opacity: 1;
+}
+
+.app-wind-bg-mist {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg,
+      transparent 0%,
+      rgba(103, 232, 249, 0.04) 35%,
+      rgba(148, 163, 184, 0.08) 50%,
+      rgba(103, 232, 249, 0.05) 65%,
+      transparent 100%);
+  background-size: 220% 100%;
+  animation: wind-mist-flow 12s ease-in-out infinite;
+}
+
+.app-wind-bg-streaks {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  min-width: 100vw;
+  min-height: 100vh;
+  overflow: visible;
+}
+
+.wind-streak {
+  position: absolute;
+  left: 0;
+  width: min(80vw, 600px);
+  height: 1.5px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, rgba(186, 230, 253, 0.65), transparent);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.wind-streak--1 {
+  top: 50%;
+  animation: wind-streak-slide-1 5s linear infinite;
+}
+
+.wind-streak--2 {
+  top: 68%;
+  width: min(20vw, 220px);
+  animation: wind-streak-slide-2 7s linear infinite;
+  animation-delay: 2.2s;
+}
+
+.wind-streak--3 {
+  top: 32%;
+  width: min(15vw, 170px);
+  animation: wind-streak-slide-3 6s linear infinite;
+  animation-delay: 4.5s;
+}
+
+.wind-streak--4 {
+  top: 82%;
+  animation: wind-streak-slide-4 9s linear infinite;
+  animation-delay: 6.8s;
+}
+
+.wind-streak--5 {
+  top: 18%;
+  animation: wind-streak-slide-5 8s linear infinite;
+  animation-delay: 0.5s;
+}
+
+.app-wind-bg-petals {
+  position: absolute;
+  inset: 0;
+}
+
+.wind-petal {
+  position: absolute;
+  width: 9px;
+  height: 11px;
+  border-radius: 100% 0 100% 0;
+  background: linear-gradient(135deg, rgba(251, 207, 232, 0.55), rgba(125, 211, 252, 0.25));
+  box-shadow: 0 0 8px rgba(251, 207, 232, 0.15);
+  opacity: 0;
+  animation: wind-petal-float 14s linear infinite;
+}
+
+.wind-petal--1 {
+  top: 12%;
+  left: -5%;
+  animation-delay: 0s;
+  animation-duration: 12s;
+}
+
+.wind-petal--2 {
+  top: 22%;
+  left: 8%;
+  animation-delay: 2s;
+  animation-duration: 14s;
+  transform: scale(0.85);
+}
+
+.wind-petal--3 {
+  top: 38%;
+  left: -8%;
+  animation-delay: 4.5s;
+  animation-duration: 12s;
+}
+
+.wind-petal--4 {
+  top: 48%;
+  left: 15%;
+  animation-delay: 7s;
+  animation-duration: 16s;
+  transform: scale(1.1);
+}
+
+.wind-petal--5 {
+  top: 58%;
+  left: -3%;
+  animation-delay: 1.2s;
+  animation-duration: 13s;
+}
+
+.wind-petal--6 {
+  top: 68%;
+  left: 10%;
+  animation-delay: 6s;
+  animation-duration: 14s;
+  transform: scale(0.75);
+}
+
+.wind-petal--7 {
+  top: 18%;
+  left: 25%;
+  animation-delay: 11.5s;
+  animation-duration: 15s;
+}
+
+.wind-petal--8 {
+  top: 42%;
+  left: 30%;
+  animation-delay: 3.2s;
+  animation-duration: 12s;
+  transform: scale(0.9);
+}
+
+.wind-petal--9 {
+  top: 75%;
+  left: 20%;
+  animation-delay: 13s;
+  animation-duration: 21s;
+}
+
+.wind-petal--10 {
+  top: 32%;
+  left: 5%;
+  animation-delay: 10s;
+  animation-duration: 14s;
+  transform: scale(1.05);
+}
+
+@keyframes wind-bg-drift {
+  0% {
+    background-position: 48% 44%;
+    transform: scale(1.06);
+  }
+
+  50% {
+    background-position: 54% 46%;
+    transform: scale(1.08);
+  }
+
+  100% {
+    background-position: 50% 40%;
+    transform: scale(1.06);
+  }
+}
+
+@keyframes wind-bg-drift-mobile-left {
+  0% {
+    background-position: 22% 42%;
+    transform: scale(1.06);
+  }
+
+  50% {
+    background-position: 28% 44%;
+    transform: scale(1.08);
+  }
+
+  100% {
+    background-position: 24% 40%;
+    transform: scale(1.06);
+  }
+}
+
+@media (max-width: 767px) {
+  .app-wind-bg-slide--mobile-left {
+    background-position: 25% center;
+    animation:
+      wind-bg-slide-fade var(--slide-cycle, 40s) ease-in-out infinite,
+      wind-bg-drift-mobile-left 52s ease-in-out infinite alternate;
+    animation-delay: var(--slide-delay, 0s), 0s;
+  }
+}
+
+@keyframes wind-mist-flow {
+  0% {
+    background-position: 120% 0;
+    opacity: 0.35;
+  }
+
+  50% {
+    background-position: -20% 0;
+    opacity: 0.85;
+  }
+
+  100% {
+    background-position: 120% 0;
+    opacity: 0.45;
+  }
+}
+
+/* Старт за левым краем → финиш за правым; лёгкая S-дуга по Y */
+@keyframes wind-streak-slide-1 {
+  0% {
+    transform: translate(-120%, -50%);
+    opacity: 0;
+  }
+
+  4% {
+    opacity: 0.7;
+  }
+
+  30% {
+    transform: translate(28vw, calc(-50% + 4vh));
+  }
+
+  65% {
+    transform: translate(62vw, calc(-50% - 3vh));
+  }
+
+  96% {
+    opacity: 0.45;
+  }
+
+  100% {
+    transform: translate(calc(100vw + 120%), -50%);
+    opacity: 0;
+  }
+}
+
+@keyframes wind-streak-slide-2 {
+  0% {
+    transform: translate(-120%, -50%);
+    opacity: 0;
+  }
+
+  4% {
+    opacity: 0.65;
+  }
+
+  32% {
+    transform: translate(30vw, calc(-50% + 5vh));
+  }
+
+  68% {
+    transform: translate(64vw, calc(-50% - 4vh));
+  }
+
+  100% {
+    transform: translate(calc(100vw + 120%), -50%);
+    opacity: 0;
+  }
+}
+
+@keyframes wind-streak-slide-3 {
+  0% {
+    transform: translate(-120%, -50%);
+    opacity: 0;
+  }
+
+  4% {
+    opacity: 0.65;
+  }
+
+  28% {
+    transform: translate(26vw, calc(-50% + 3vh));
+  }
+
+  62% {
+    transform: translate(58vw, calc(-50% - 5vh));
+  }
+
+  100% {
+    transform: translate(calc(100vw + 120%), -50%);
+    opacity: 0;
+  }
+}
+
+@keyframes wind-streak-slide-4 {
+  0% {
+    transform: translate(-120%, -50%);
+    opacity: 0;
+  }
+
+  4% {
+    opacity: 0.6;
+  }
+
+  35% {
+    transform: translate(32vw, calc(-50% + 3vh));
+  }
+
+  70% {
+    transform: translate(66vw, calc(-50% - 3vh));
+  }
+
+  100% {
+    transform: translate(calc(100vw + 120%), -50%);
+    opacity: 0;
+  }
+}
+
+@keyframes wind-streak-slide-5 {
+  0% {
+    transform: translate(-120%, -50%);
+    opacity: 0;
+  }
+
+  4% {
+    opacity: 0.65;
+  }
+
+  30% {
+    transform: translate(27vw, calc(-50% + 4vh));
+  }
+
+  64% {
+    transform: translate(60vw, calc(-50% - 4vh));
+  }
+
+  100% {
+    transform: translate(calc(100vw + 120%), -50%);
+    opacity: 0;
+  }
+}
+
+@keyframes wind-petal-float {
+  0% {
+    opacity: 0;
+    transform: translate3d(-15vw, 0, 0) rotate(0deg);
+  }
+
+  5% {
+    opacity: 0.9;
+  }
+
+  92% {
+    opacity: 0.55;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(120vw, -18vh, 0) rotate(420deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .app-wind-bg-slide,
+  .app-wind-bg-mist,
+  .wind-streak,
+  .wind-petal {
+    animation: none !important;
+  }
+
+  .app-wind-bg-slide {
+    opacity: 0;
+  }
+
+  .app-wind-bg-slide:first-child {
+    opacity: 1;
+  }
+
+  .app-wind-bg-mist {
+    opacity: 0.4;
+    background-position: 50% 0;
+  }
+
+  .wind-petal,
+  .wind-streak {
+    display: none;
+  }
+}

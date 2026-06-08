@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { APP_NAME } from '../utils';
+import { APP_NAME, INTRO_DURATION_MS } from '../utils';
 import { buildObjectsFromColumnA } from '../utils/buildColumnAObjects';
+import { findWorkerForLogin, parseUserWorkMonths } from '../utils/parseUserWorkMonths';
 import { AUTH_STORAGE_KEY } from '../constants/authStorage';
 
 export function useHomeAuth({ tableData, t }) {
@@ -24,10 +25,10 @@ export function useHomeAuth({ tableData, t }) {
   const [showIntro, setShowIntro] = useState(false);
 
   const builtObjects = useMemo(() => buildObjectsFromColumnA(tableData), [tableData]);
-  const userRows = useMemo(() => {
+  const userMonthBlocks = useMemo(() => {
     if (!currentUser) return [];
-    return [[currentUser.name, ...currentUser.otherData]];
-  }, [currentUser]);
+    return parseUserWorkMonths(tableData, currentUser.name);
+  }, [currentUser, tableData]);
 
   useEffect(() => {
     const authLoadingTimer = window.setTimeout(() => {
@@ -51,7 +52,7 @@ export function useHomeAuth({ tableData, t }) {
       setShowIntro(true);
       const introTimer = window.setTimeout(() => {
         setShowIntro(false);
-      }, 2300);
+      }, INTRO_DURATION_MS);
       prevHadUserRef.current = true;
       return () => window.clearTimeout(introTimer);
     }
@@ -65,15 +66,14 @@ export function useHomeAuth({ tableData, t }) {
     const nextName = loginName.trim();
     const nextPassword = loginPassword.trim();
 
-    const user = builtObjects.find(
-      (item) => item.name === nextName && item.password === nextPassword
-    );
+    const result = findWorkerForLogin(builtObjects, nextName, nextPassword);
 
-    if (!user) {
+    if (!result.ok) {
       setAuthError(t('wrongCredentials'));
       return;
     }
 
+    const user = result.user;
     setAuthError('');
     setCurrentUser(user);
     setSavedAuth({ id: user.id, name: user.name, password: user.password });
@@ -150,6 +150,6 @@ export function useHomeAuth({ tableData, t }) {
     showIntro,
     handleLogin,
     handleLogout,
-    userRows,
+    userMonthBlocks,
   };
 }
