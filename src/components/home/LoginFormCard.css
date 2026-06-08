@@ -1,0 +1,113 @@
+.auth-card {
+  width: min(420px, 100%);
+  margin: 12px 0 0 12px;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  padding: 0;
+}
+
+.auth-form {
+  display: grid;
+  gap: 10px;
+}
+
+.auth-form input {
+  border: none;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.72);
+  background: transparent;
+  color: #f1f5f9;
+  border-radius: 0;
+  padding: 10px;
+}
+
+.auth-form input:focus,
+.auth-form input:focus-visible {
+  outline: none;
+  box-shadow: none;
+  border: none;
+  border-bottom: 1px solid #ffffff;
+  transition: 0.5s;
+}
+
+.password-field {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+}
+
+.password-toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.72);
+  background: transparent;
+  color: #e2e8f0;
+  border-radius: 0;
+  padding: 10px 0;
+  cursor: pointer;
+}
+
+.password-toggle-btn:hover {
+  color: #ffffff;
+}
+
+.auth-card .retry-btn {
+  border: none;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.72);
+  background: transparent;
+  border-radius: 0;
+  padding: 10px 0;
+}
+
+.auth-card .retry-btn:hover {
+  background: transparent;
+  color: #ffffff;
+  border-bottom: 1px solid #ffffff;
+  transition: 0.5s;
+}
+
+@media (min-width: 1200px) {
+  .auth-card {
+    width: min(460px, 100%);
+    margin-left: 18px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1199px) {
+  .auth-card {
+    width: min(500px, 100%);
+    margin: 8px 0 0 0;
+  }
+}
+
+@media (max-width: 767px) {
+  .auth-card {
+    width: 100%;
+    margin: 6px 0 0 0;
+  }
+
+  .auth-form {
+    gap: 8px;
+  }
+
+  .auth-form input {
+    font-size: 0.98rem;
+    padding: 10px 2px;
+  }
+
+  .password-field {
+    grid-template-columns: 1fr 42px;
+    gap: 6px;
+  }
+
+  .password-toggle-btn {
+    padding: 8px 0;
+  }
+
+  .password-toggle-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+}

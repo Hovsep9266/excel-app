@@ -1,0 +1,19 @@
+.profile-modal-close {
+  border: none;
+  background: transparent;
+  color: #cbd5e1;
+  cursor: pointer;
+  padding: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+}
+
+.profile-modal-close svg {
+  display: block;
+}
+
+.profile-modal-close:hover {
+  color: #7dd3fc;
+}

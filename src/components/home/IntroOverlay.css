@@ -1,0 +1,63 @@
+.intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  pointer-events: none;
+  background: rgba(15, 23, 42, 0.35);
+  animation: intro-overlay-fade 900ms ease forwards;
+  animation-delay: 1.35s;
+}
+
+.intro-icon {
+  z-index: 1000;
+  position: fixed;
+  right: 20px;
+  top: 40px;
+  width: 95%;
+  height: 90%;
+  border-radius: 28px;
+  border: 1px solid #334155;
+  background: linear-gradient(145deg, #172554 0%, #1e293b 100%);
+  color: #67e8f9;
+  font-size: clamp(4rem, 16vw, 12rem);
+  font-weight: 700;
+  font-family: 'Courier New', Courier, monospace;
+  font-style: italic;
+  letter-spacing: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.55);
+  text-shadow: 0 0 14px rgba(103, 232, 249, 0.35);
+  transform-origin: top right;
+  transform: scale(1);
+  animation: intro-icon-shrink 2.1s cubic-bezier(0.2, 0.85, 0.22, 1) forwards;
+}
+
+@keyframes intro-icon-shrink {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  55% {
+    transform: scale(1.03);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(0.08);
+    opacity: 0;
+  }
+}
+
+@keyframes intro-overlay-fade {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}

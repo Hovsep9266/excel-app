@@ -1,0 +1,38 @@
+.app-title {
+  margin: 0 0 8px;
+  font-size: 2rem;
+}
+
+.app-subtitle {
+  margin: 0 0 24px;
+  color: #cbd5e1;
+}
+
+@media (min-width: 1200px) {
+  .app-title {
+    font-size: 2.2rem;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1199px) {
+  .app-title {
+    font-size: 1.9rem;
+  }
+
+  .app-subtitle {
+    font-size: 0.95rem;
+    margin-bottom: 16px;
+  }
+}
+
+@media (max-width: 767px) {
+  .app-title {
+    font-size: 1.55rem;
+    margin-bottom: 6px;
+  }
+
+  .app-subtitle {
+    font-size: 0.84rem;
+    margin-bottom: 12px;
+  }
+}
