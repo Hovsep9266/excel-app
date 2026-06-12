@@ -9,8 +9,8 @@ function AppLoggedHeader({ t }) {
         <h1 className="app-title">{APP_NAME}</h1>
         <p className="app-subtitle">{t('liveViewSubtitle')}</p>
       </div>
-      <div className="app-site-icon" aria-label="AquaPrime">
-        AP
+      <div className="app-site-icon" aria-label={APP_NAME}>
+        HS
       </div>
     </div>
   );

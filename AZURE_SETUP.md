@@ -6,7 +6,7 @@
 
 1. Откройте [https://portal.azure.com/#view/Microsoft_AAD_RegisteredApps](https://portal.azure.com/#view/Microsoft_AAD_RegisteredApps)
 2. **New registration**
-3. Name: `AquaPrime`
+3. Name: `HydroAir Sistems`
 4. **Supported account types:** `Personal Microsoft accounts only`
 5. Redirect URI: оставьте пустым
 6. **Register** → скопируйте **Application (client) ID**

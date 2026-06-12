@@ -3,7 +3,7 @@
 
 services:
   - type: web
-    name: aquaprime
+    name: hydroair-sistems
     runtime: node
     plan: starter
     buildCommand: npm install && npm --prefix server install && npm run build

@@ -27,16 +27,27 @@ const { checkShareLinkWorkbookAccess, getShareUrl } = require('./shareLinkWorkbo
 
 dotenv.config({ path: path.join(__dirname, '.env'), override: true });
 
+function normalizeFrontendUrl() {
+  const raw = String(process.env.FRONTEND_URL || '').trim().replace(/^['"]|['"]$/g, '');
+  if (!raw) return '';
+  try {
+    return new URL(raw).origin;
+  } catch (error) {
+    return '';
+  }
+}
+
 const app = express();
 const buildPath = path.join(__dirname, '..', 'build');
 const isProduction =
   process.env.NODE_ENV === 'production' ||
   process.env.SERVE_STATIC === 'true' ||
   fs.existsSync(path.join(buildPath, 'index.html'));
+const servesFrontendFromSameServer = isProduction && fs.existsSync(path.join(buildPath, 'index.html'));
 
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || (isProduction ? true : true),
+    origin: servesFrontendFromSameServer ? true : normalizeFrontendUrl() || true,
     credentials: false,
   })
 );
@@ -161,7 +172,7 @@ app.get('/api/auth/callback', async (req, res) => {
       error: 'Auth callback is only used in EXCEL_SOURCE=graph mode.',
     });
   }
-  const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+  const frontendUrl = normalizeFrontendUrl() || `${req.protocol}://${req.get('host')}`;
   const { code, state, error: oauthError, error_description: errorDescription } = req.query;
 
   if (oauthError) {
@@ -395,6 +406,6 @@ const host = process.env.HOST || '0.0.0.0';
 app.listen(port, host, () => {
   // eslint-disable-next-line no-console
   console.log(
-    `AquaPrime ${isProduction ? 'production' : 'dev'} server on http://${host === '0.0.0.0' ? 'localhost' : host}:${port}`
+    `HydroAir Sistems ${isProduction ? 'production' : 'dev'} server on http://${host === '0.0.0.0' ? 'localhost' : host}:${port}`
   );
 });

@@ -3,6 +3,6 @@ import App from './App';
 
 test('renders app title', () => {
   render(<App />);
-  const titleElement = screen.getByText(/aquaprime/i);
+  const titleElement = screen.getByText(/hydroair sistems/i);
   expect(titleElement).toBeInTheDocument();
 });

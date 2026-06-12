@@ -1,4 +1,4 @@
-export const APP_NAME = 'AquaPrime';
+export const APP_NAME = 'HydroAir Sistems';
 export const INTRO_DURATION_MS = 3500;
 export const DEFAULT_SHEET = 'աշխատող';
 export const DEFAULT_RANGE = '';

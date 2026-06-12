@@ -1,5 +1,6 @@
 const XLSX = require('xlsx');
 const { getAccessToken } = require('./auth');
+const { getShareUrl } = require('./shareLinkWorkbookClient');
 
 const GRAPH_BASE = 'https://graph.microsoft.com/v1.0';
 
@@ -19,7 +20,7 @@ function toShareId(shareUrl) {
 function getWorkbookItemPath() {
   const driveId = process.env.EXCEL_DRIVE_ID;
   const itemId = process.env.EXCEL_ITEM_ID;
-  const shareUrl = process.env.EXCEL_SHARE_URL;
+  const shareUrl = getShareUrl();
 
   // Share link resolves correctly after login; resid from OneDrive URLs is not a Graph item id.
   if (shareUrl) {

@@ -9,12 +9,16 @@ function createShareLinkError(message, statusCode = 500, code = 'SHARE_LINK_ERRO
   return error;
 }
 
+function normalizeEnvUrl(value) {
+  return String(value || '').trim().replace(/^['"]|['"]$/g, '');
+}
+
 function getShareUrl() {
   return (
-    process.env.EXCEL_PUBLIC_FILE_URL ||
-    process.env.EXCEL_SHARE_URL ||
+    normalizeEnvUrl(process.env.EXCEL_PUBLIC_FILE_URL) ||
+    normalizeEnvUrl(process.env.EXCEL_SHARE_URL) ||
     ''
-  ).trim();
+  );
 }
 
 function toShareToken(shareUrl) {

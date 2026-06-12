@@ -8,14 +8,12 @@ const BG_SLIDES = [
   'https://www.wherewindsmeetgame.com/pc/gw/20251024112521/img/9_d298dbdf.jpg?image_process=format,jpg',
   'https://picfiles.alphacoders.com/657/657077.jpg',
   'https://wallpaperaccess.com/full/23988405.jpg',
-  'https://www.wherewindsmeetgame.com/pc/gw/20251024112521/img/22_94a1bd9c.jpg?image_process=format,jpg',
   'https://wallpapercat.com/w/full/0/b/8/126283-3332x1874-desktop-hd-game-of-thrones-wallpaper-photo.jpg',
 ];
 
 /** На мобильных — кадр с левого края, не по центру */
 const MOBILE_LEFT_ALIGN_SLIDES = new Set([
   'https://wallpaperaccess.com/full/23988405.jpg',
-  'https://www.wherewindsmeetgame.com/pc/gw/20251024112521/img/22_94a1bd9c.jpg?image_process=format,jpg',
   'https://wallpapercat.com/w/full/0/b/8/126283-3332x1874-desktop-hd-game-of-thrones-wallpaper-photo.jpg',
 ]);
 

@@ -29,10 +29,10 @@ export const messages = {
     menuLogOut: 'Log Out',
     rulesTitle: 'Rules & guide',
     rulesIntro:
-      'Welcome to AquaPrime. This page explains what the site does and how to use it after you sign in.',
+      'Welcome to HydroAir Sistems. This page explains what the site does and how to use it after you sign in.',
     rulesAboutTitle: 'What is this site?',
     rulesAboutText:
-      'AquaPrime shows live data from an Excel workbook in your browser. The table updates automatically so you can monitor values without opening the file manually.',
+      'HydroAir Sistems shows live data from an Excel workbook in your browser. The table updates automatically so you can monitor values without opening the file manually.',
     rulesCanDoTitle: 'What you can do',
     rulesCanDo1: 'Sign in with your name and password from the workbook user list.',
     rulesCanDo2: 'View your row in a table that looks like Excel (columns and row labels).',
@@ -47,7 +47,7 @@ export const messages = {
     rulesTipsText:
       'Use the same name and password as in the Excel list. If the table is empty, check that the backend is running and the workbook path or link is configured. On mobile, menus open as a panel from the bottom of the screen.',
     rulesThanksText:
-      'Thank you for using AquaPrime. We appreciate your time and hope the service is helpful for your daily work.',
+      'Thank you for using HydroAir Sistems. We appreciate your time and hope the service is helpful for your daily work.',
     clickMe: 'Click me',
     collapseTables: 'Hide tables',
     expandTables: 'Show tables',
@@ -105,10 +105,10 @@ export const messages = {
     menuLogOut: 'Выйти',
     rulesTitle: 'Правила и справка',
     rulesIntro:
-      'Добро пожаловать в AquaPrime. Здесь описано, для чего этот сайт и как им пользоваться после входа.',
+      'Добро пожаловать в HydroAir Sistems. Здесь описано, для чего этот сайт и как им пользоваться после входа.',
     rulesAboutTitle: 'Для чего этот сайт?',
     rulesAboutText:
-      'AquaPrime показывает в браузере актуальные данные из книги Excel. Таблица обновляется автоматически — не нужно каждый раз открывать файл вручную.',
+      'HydroAir Sistems показывает в браузере актуальные данные из книги Excel. Таблица обновляется автоматически — не нужно каждый раз открывать файл вручную.',
     rulesCanDoTitle: 'Что умеет сайт',
     rulesCanDo1: 'Вход по имени и паролю из списка пользователей в Excel.',
     rulesCanDo2: 'Просмотр вашей строки в таблице в стиле Excel (колонки и буквы строк).',
@@ -123,7 +123,7 @@ export const messages = {
     rulesTipsText:
       'Используйте имя и пароль из списка в Excel. Если таблица пустая — проверьте, что backend запущен и указан путь или ссылка на файл. На телефоне меню открывается снизу экрана.',
     rulesThanksText:
-      'Спасибо, что пользуетесь AquaPrime. Мы ценим ваше время и надеемся, что сервис помогает вам в работе.',
+      'Спасибо, что пользуетесь HydroAir Sistems. Мы ценим ваше время и надеемся, что сервис помогает вам в работе.',
     clickMe: 'Нажми на меня',
     collapseTables: 'Скрыть таблицы',
     expandTables: 'Показать таблицы',
@@ -179,10 +179,10 @@ export const messages = {
     menuLogOut: 'Ելք',
     rulesTitle: 'Կանոններ և ուղեցույց',
     rulesIntro:
-      'Բարի գալուստ AquaPrime։ Այստեղ նկարագրված է, թե ինչի համար է կայքը և ինչպես օգտագործել մուտքից հետո։',
+      'Բարի գալուստ HydroAir Sistems։ Այստեղ նկարագրված է, թե ինչի համար է կայքը և ինչպես օգտագործել մուտքից հետո։',
     rulesAboutTitle: 'Ինչի համար է այս կայքը',
     rulesAboutText:
-      'AquaPrime-ը ցույց է տալիս Excel գրքի տվյալները բրաուզերում։ Աղյուսակը ավտոմատ թարմացվում է՝ առանց ֆայլը ձեռքով բացելու։',
+      'HydroAir Sistems-ը ցույց է տալիս Excel գրքի տվյալները բրաուզերում։ Աղյուսակը ավտոմատ թարմացվում է՝ առանց ֆայլը ձեռքով բացելու։',
     rulesCanDoTitle: 'Ինչ կարելի է անել',
     rulesCanDo1: 'Մուտք անունով և գաղտնաբառով Excel-ի օգտատերերի ցանկից։',
     rulesCanDo2: 'Ձեր տողի դիտում Excel-ի նման աղյուսակում։',
@@ -197,7 +197,7 @@ export const messages = {
     rulesTipsText:
       'Օգտագործեք Excel-ի ցանկի անունն ու գաղտնաբառը։ Դատարկ աղյուսակի դեպքում ստուգեք backend-ը և գրքի ուղին կամ հղումը։ Բջջայինում մենյուն բացվում է էկրանի ներքևից։',
     rulesThanksText:
-      'Շնորհակալություն AquaPrime-ից օգտվելու համար։ Գնահատում ենք ձեր ժամանակը և հույսով ենք, որ ծառայությունը օգտակար է ձեր աշխատանքում։',
+      'Շնորհակալություն HydroAir Sistems-ից օգտվելու համար։ Գնահատում ենք ձեր ժամանակը և հույսով ենք, որ ծառայությունը օգտակար է ձեր աշխատանքում։',
     clickMe: 'Սեղմիր ինձ',
     collapseTables: 'Թաքցնել աղյուսակները',
     expandTables: 'Ցույց տալ աղյուսակները',

@@ -1,4 +1,4 @@
-# Deploy AquaPrime to production
+# Deploy HydroAir Sistems to production
 
 ## 24/7 without your PC (облако)
 
@@ -100,7 +100,7 @@ Good if the PC is always on and has OneDrive synced.
 5. Keep running with **PM2** (optional):
    ```bash
    npm install -g pm2
-   pm2 start npm --name aquaprime -- run start:prod
+   pm2 start npm --name hydroair-sistems -- run start:prod
    pm2 save
    ```
 
@@ -123,8 +123,8 @@ On cloud there is **no local Excel file**. Use **share link only**.
 
 2. **Docker**:
    ```bash
-   docker build -t aquaprime .
-   docker run -p 4000:4000 --env-file server/.env aquaprime
+   docker build -t hydroair-sistems .
+   docker run -p 4000:4000 --env-file server/.env hydroair-sistems
    ```
 
 3. **Render.com** (example):
