@@ -24,6 +24,7 @@ function HomePage() {
   const [profileOpen, setProfileOpen] = useState(false);
   const [rulesOpen, setRulesOpen] = useState(false);
   const [languagePickOpen, setLanguagePickOpen] = useState(false);
+  const [tablesExpanded, setTablesExpanded] = useState(true);
 
   const currentLangLabel = useMemo(() => {
     return languageOptions.find((opt) => opt.id === lang)?.label || lang;
@@ -80,18 +81,27 @@ function HomePage() {
               <p className={errorMessage ? 'status-text error logged-status' : 'status-text logged-status'}>
                 {statusText}
               </p>
-              <aside className="menu-area">
+              <aside className={`menu-area${tablesExpanded ? '' : ' menu-area--collapsed'}`}>
                 <button
                   className="clickme-button"
                   type="button"
                   onClick={() => setMenuOpen((v) => !v)}
                   aria-haspopup="true"
                   aria-expanded={menuOpen}
+                  tabIndex={tablesExpanded ? 0 : -1}
                 >
                   {t('clickMe')}
                 </button>
               </aside>
-              <UserDataSection userMonthBlocks={auth.userMonthBlocks} />
+              <UserDataSection
+                userMonthBlocks={auth.userMonthBlocks}
+                tablesExpanded={tablesExpanded}
+                onTablesExpandedChange={(next) => {
+                  const expanded = typeof next === 'function' ? next(tablesExpanded) : next;
+                  setTablesExpanded(expanded);
+                  if (!expanded) setMenuOpen(false);
+                }}
+              />
             </div>
 
             <UserMenuModal

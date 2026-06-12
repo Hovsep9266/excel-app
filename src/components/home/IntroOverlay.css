@@ -110,11 +110,8 @@
   position: relative;
   margin: 0.15rem 0 0;
   font-size: clamp(1.1rem, 4.5vw, 1.75rem);
-  font-weight: 600;
-  letter-spacing: 0.28em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #67e8f9;
-  text-shadow: 0 0 20px rgba(103, 232, 249, 0.45);
   animation: intro-text-in 0.85s ease-out 0.35s both;
 }
 

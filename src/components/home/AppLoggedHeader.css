@@ -1,3 +1,14 @@
+.app-header-copy .site-brand-name::after {
+  content: '';
+  display: block;
+  width: 3.25rem;
+  height: 3px;
+  margin-top: 7px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(125, 211, 252, 0.95), rgba(125, 211, 252, 0.15));
+  box-shadow: 0 0 12px rgba(125, 211, 252, 0.45);
+}
+
 .app-header {
   display: flex;
   align-items: flex-start;
@@ -52,6 +63,12 @@
     min-width: 0;
     text-align: left;
     align-items: flex-start;
+  }
+
+  .app-header-copy .site-brand-name::after {
+    width: 2.5rem;
+    height: 2px;
+    margin-top: 5px;
   }
 
   .app-site-icon {

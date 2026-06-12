@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useI18n } from '../../i18n/i18n';
 import WorkMonthTable from '../WorkMonthTable';
 import './UserDataSection.css';
@@ -19,9 +18,8 @@ function ChevronIcon({ expanded }) {
   );
 }
 
-function UserDataSection({ userMonthBlocks }) {
+function UserDataSection({ userMonthBlocks, tablesExpanded, onTablesExpandedChange }) {
   const { t } = useI18n();
-  const [tablesExpanded, setTablesExpanded] = useState(true);
 
   return (
     <div className="table-area">
@@ -29,7 +27,7 @@ function UserDataSection({ userMonthBlocks }) {
         <button
           type="button"
           className="table-toggle-btn"
-          onClick={() => setTablesExpanded((prev) => !prev)}
+          onClick={() => onTablesExpandedChange((prev) => !prev)}
           aria-expanded={tablesExpanded}
           aria-label={tablesExpanded ? t('collapseTables') : t('expandTables')}
         >

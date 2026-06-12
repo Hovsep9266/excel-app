@@ -3,6 +3,17 @@
   font-size: 2rem;
 }
 
+.site-brand-name {
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  line-height: 1.12;
+  background: linear-gradient(118deg, #f8fafc 0%, #dbeafe 28%, #7dd3fc 58%, #bae6fd 82%, #f0f9ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 2px 14px rgba(125, 211, 252, 0.38));
+}
+
 .app-subtitle {
   margin: 0 0 24px;
   color: #cbd5e1;

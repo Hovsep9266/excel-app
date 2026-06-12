@@ -26,8 +26,13 @@
 }
 
 .site-footer-brand {
-  color: #7dd3fc;
   font-weight: 700;
+  letter-spacing: 0.03em;
+  background: linear-gradient(118deg, #e0f2fe 0%, #7dd3fc 55%, #bae6fd 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 1px 6px rgba(125, 211, 252, 0.3));
 }
 
 .site-footer-sep {

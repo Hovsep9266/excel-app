@@ -16,7 +16,7 @@
 
 .app-wind-bg-slides {
   position: absolute;
-  inset: -10%;
+  inset: -14%;
 }
 
 .app-wind-bg-slide {
@@ -128,7 +128,7 @@
   left: 8%;
   animation-delay: 2s;
   animation-duration: 14s;
-  transform: scale(0.85);
+  /* transform: scale(0.85); */
 }
 
 .wind-petal--3 {
@@ -143,7 +143,7 @@
   left: 15%;
   animation-delay: 7s;
   animation-duration: 16s;
-  transform: scale(1.1);
+  /* transform: scale(1.1); */
 }
 
 .wind-petal--5 {
@@ -158,7 +158,7 @@
   left: 10%;
   animation-delay: 6s;
   animation-duration: 14s;
-  transform: scale(0.75);
+  /* transform: scale(0.75); */
 }
 
 .wind-petal--7 {
@@ -173,7 +173,7 @@
   left: 30%;
   animation-delay: 3.2s;
   animation-duration: 12s;
-  transform: scale(0.9);
+  /* transform: scale(0.9); */
 }
 
 .wind-petal--9 {
@@ -188,40 +188,40 @@
   left: 5%;
   animation-delay: 10s;
   animation-duration: 14s;
-  transform: scale(1.05);
+  /* transform: scale(1.05); */
 }
 
 @keyframes wind-bg-drift {
   0% {
     background-position: 48% 44%;
-    transform: scale(1.06);
+    /* transform: scale(1.04); */
   }
 
   50% {
     background-position: 54% 46%;
-    transform: scale(1.08);
+    /* transform: scale(1.06); */
   }
 
   100% {
     background-position: 50% 40%;
-    transform: scale(1.06);
+    /* transform: scale(1.04); */
   }
 }
 
 @keyframes wind-bg-drift-mobile-left {
   0% {
     background-position: 22% 42%;
-    transform: scale(1.06);
+    /* transform: scale(1.04); */
   }
 
   50% {
     background-position: 28% 44%;
-    transform: scale(1.08);
+    /* transform: scale(1.06); */
   }
 
   100% {
     background-position: 24% 40%;
-    transform: scale(1.06);
+    /* transform: scale(1.04); */
   }
 }
 
@@ -232,23 +232,26 @@
   }
 
   .app-wind-bg-slides {
-    inset: 0;
+    inset: -8%;
   }
 
   .app-wind-bg-slide {
-    animation:
-      wind-bg-slide-fade var(--slide-cycle, 40s) ease-in-out infinite,
-      wind-bg-drift 52s ease-in-out infinite alternate;
-    animation-delay: var(--slide-delay, 0s), 0s;
-    will-change: opacity, transform;
+    animation: wind-bg-slide-fade var(--slide-cycle, 40s) ease-in-out infinite;
+    animation-delay: var(--slide-delay, 0s);
+    will-change: opacity;
+    transform: none;
   }
 
   .app-wind-bg-slide--mobile-left {
     background-position: 25% center;
-    animation:
-      wind-bg-slide-fade var(--slide-cycle, 40s) ease-in-out infinite,
-      wind-bg-drift-mobile-left 52s ease-in-out infinite alternate;
-    animation-delay: var(--slide-delay, 0s), 0s;
+    animation: wind-bg-slide-fade var(--slide-cycle, 40s) ease-in-out infinite;
+    animation-delay: var(--slide-delay, 0s);
+  }
+
+  .app-wind-bg-slide--mobile-right {
+    background-position: 82% center;
+    animation: wind-bg-slide-fade var(--slide-cycle, 40s) ease-in-out infinite;
+    animation-delay: var(--slide-delay, 0s);
   }
 
   .app-wind-bg-mist {

@@ -7,15 +7,30 @@ const BG_SLIDES = [
   'https://images.template.net/222766/darkness-background-edit-online.jpg',
   'https://www.wherewindsmeetgame.com/pc/gw/20251024112521/img/9_d298dbdf.jpg?image_process=format,jpg',
   'https://picfiles.alphacoders.com/657/657077.jpg',
+  "https://wallpapercave.com/wp/wp12049483.jpg",
   'https://wallpaperaccess.com/full/23988405.jpg',
+  "https://www.wherewindsmeetgame.com/pc/gw/20251024112521/img/22_94a1bd9c.jpg?image_process=format,jpg",
   'https://wallpapercat.com/w/full/0/b/8/126283-3332x1874-desktop-hd-game-of-thrones-wallpaper-photo.jpg',
 ];
 
-/** На мобильных — кадр с левого края, не по центру */
+/** На мобильных — кадр с левого края */
 const MOBILE_LEFT_ALIGN_SLIDES = new Set([
   'https://wallpaperaccess.com/full/23988405.jpg',
+  "https://www.wherewindsmeetgame.com/pc/gw/20251024112521/img/22_94a1bd9c.jpg?image_process=format,jpg",
+
   'https://wallpapercat.com/w/full/0/b/8/126283-3332x1874-desktop-hd-game-of-thrones-wallpaper-photo.jpg',
 ]);
+
+/** На мобильных — правая часть картинки по центру экрана */
+const MOBILE_RIGHT_ALIGN_SLIDES = new Set([
+  'https://wallpapercave.com/wp/wp12049483.jpg',
+]);
+
+function getSlideClassName(src) {
+  if (MOBILE_LEFT_ALIGN_SLIDES.has(src)) return 'app-wind-bg-slide app-wind-bg-slide--mobile-left';
+  if (MOBILE_RIGHT_ALIGN_SLIDES.has(src)) return 'app-wind-bg-slide app-wind-bg-slide--mobile-right';
+  return 'app-wind-bg-slide';
+}
 
 const SLIDE_INTERVAL_S = 8;
 const SLIDE_COUNT = BG_SLIDES.length;
@@ -50,11 +65,7 @@ function AppWindBackground() {
         {BG_SLIDES.map((src, index) => (
           <div
             key={src}
-            className={
-              MOBILE_LEFT_ALIGN_SLIDES.has(src)
-                ? 'app-wind-bg-slide app-wind-bg-slide--mobile-left'
-                : 'app-wind-bg-slide'
-            }
+            className={getSlideClassName(src)}
             style={{
               backgroundImage: `url("${src}")`,
               '--slide-delay': `${index * SLIDE_INTERVAL_S}s`,
