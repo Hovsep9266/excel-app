@@ -1,9 +1,17 @@
 .app-wind-bg {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
   z-index: 0;
   overflow: hidden;
   pointer-events: none;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .app-wind-bg-slides {
@@ -46,9 +54,8 @@
   position: absolute;
   inset: 0;
   width: 100%;
-  min-width: 100vw;
-  min-height: 100vh;
-  overflow: visible;
+  height: 100%;
+  overflow: hidden;
 }
 
 .wind-streak {
@@ -219,12 +226,37 @@
 }
 
 @media (max-width: 767px) {
+  .app-wind-bg {
+    position: absolute;
+    height: 100%;
+  }
+
+  .app-wind-bg-slides {
+    inset: 0;
+  }
+
+  .app-wind-bg-slide {
+    animation: wind-bg-slide-fade var(--slide-cycle, 40s) ease-in-out infinite;
+    animation-delay: var(--slide-delay, 0s);
+    will-change: opacity;
+    transform: none;
+  }
+
   .app-wind-bg-slide--mobile-left {
     background-position: 25% center;
-    animation:
-      wind-bg-slide-fade var(--slide-cycle, 40s) ease-in-out infinite,
-      wind-bg-drift-mobile-left 52s ease-in-out infinite alternate;
-    animation-delay: var(--slide-delay, 0s), 0s;
+    animation: wind-bg-slide-fade var(--slide-cycle, 40s) ease-in-out infinite;
+    animation-delay: var(--slide-delay, 0s);
+  }
+
+  .app-wind-bg-mist {
+    animation: none;
+    opacity: 0.45;
+    background-position: 50% 0;
+  }
+
+  .wind-streak,
+  .wind-petal {
+    display: none;
   }
 }
 
