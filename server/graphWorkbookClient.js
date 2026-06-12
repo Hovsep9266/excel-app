@@ -21,14 +21,15 @@ function getWorkbookItemPath() {
   const itemId = process.env.EXCEL_ITEM_ID;
   const shareUrl = process.env.EXCEL_SHARE_URL;
 
+  // Share link resolves correctly after login; resid from OneDrive URLs is not a Graph item id.
+  if (shareUrl) {
+    return `/shares/${toShareId(shareUrl)}/driveItem`;
+  }
   if (driveId && itemId) {
     return `/drives/${encodeURIComponent(driveId)}/items/${encodeURIComponent(itemId)}`;
   }
   if (itemId) {
     return `/me/drive/items/${encodeURIComponent(itemId)}`;
-  }
-  if (shareUrl) {
-    return `/shares/${toShareId(shareUrl)}/driveItem`;
   }
 
   throw createGraphError(

@@ -1,3 +1,5 @@
+const { canAccessCloudWorkbook } = require('./auth');
+const { getWorksheetRangeFromGraphFile } = require('./graphWorkbookClient');
 const { getWorksheetRangeFromLocalFile } = require('./localWorkbookClient');
 const { getWorksheetRangeFromShareLink, getShareUrl } = require('./shareLinkWorkbookClient');
 
@@ -16,40 +18,55 @@ function hasLocalFileConfig() {
 }
 
 async function getWorksheetRangeHybrid({ sheet, range }) {
-  const localPromise = hasLocalFileConfig()
-    ? getWorksheetRangeFromLocalFile({ sheet, range })
-    : Promise.reject(new Error('Local file not configured'));
-  const sharePromise = hasShareLinkConfig()
-    ? getWorksheetRangeFromShareLink({ sheet, range })
-    : Promise.reject(new Error('Share link not configured'));
+  const sources = [];
 
-  const [localResult, shareResult] = await Promise.allSettled([localPromise, sharePromise]);
-
-  const localOk = localResult.status === 'fulfilled';
-  const shareOk = shareResult.status === 'fulfilled';
-
-  if (!localOk && !shareOk) {
-    throw localResult.reason || shareResult.reason;
+  if (hasLocalFileConfig()) {
+    sources.push(
+      getWorksheetRangeFromLocalFile({ sheet, range }).then((value) => ({
+        ...value,
+        sourceUsed: 'local_file',
+      }))
+    );
   }
 
-  if (!localOk) {
-    return { ...shareResult.value, sourceUsed: 'share_link' };
+  if (hasShareLinkConfig()) {
+    sources.push(
+      getWorksheetRangeFromShareLink({ sheet, range }).then((value) => ({
+        ...value,
+        sourceUsed: 'share_link',
+      }))
+    );
   }
 
-  if (!shareOk) {
-    return { ...localResult.value, sourceUsed: 'local_file' };
+  if (canAccessCloudWorkbook()) {
+    sources.push(
+      getWorksheetRangeFromGraphFile({ sheet, range }).then((value) => ({
+        ...value,
+        sourceUsed: 'graph',
+      }))
+    );
   }
 
-  const local = localResult.value;
-  const share = shareResult.value;
-  const localTime = toTimestamp(local.fileLastModifiedAt);
-  const shareTime = toTimestamp(share.fileLastModifiedAt);
-
-  if (shareTime >= localTime) {
-    return { ...share, sourceUsed: 'share_link' };
+  if (!sources.length) {
+    throw new Error(
+      'No Excel source configured. Set EXCEL_LOCAL_PATH, EXCEL_SHARE_URL, or complete Microsoft login at /ms-login'
+    );
   }
 
-  return { ...local, sourceUsed: 'local_file' };
+  const results = await Promise.allSettled(sources);
+  const successful = results
+    .filter((result) => result.status === 'fulfilled')
+    .map((result) => result.value);
+
+  if (!successful.length) {
+    throw results[0]?.reason || new Error('All Excel sources failed');
+  }
+
+  return successful.reduce((newest, current) => {
+    const newestTime = toTimestamp(newest.fileLastModifiedAt);
+    const currentTime = toTimestamp(current.fileLastModifiedAt);
+    return currentTime >= newestTime ? current : newest;
+  });
 }
 
 async function checkHybridWorkbookAccess() {

@@ -3,7 +3,14 @@ const dotenv = require('dotenv');
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
-const { buildAuthorizeUrl, getAuthStatus, handleAuthCallback } = require('./auth');
+const {
+  buildAuthorizeUrl,
+  canAccessCloudWorkbook,
+  getAuthStatus,
+  handleAuthCallback,
+  pollDeviceCodeLogin,
+  startDeviceCodeLogin,
+} = require('./auth');
 const { checkGraphWorkbookAccess, getWorksheetRangeFromGraphFile } = require('./graphWorkbookClient');
 const {
   checkLocalWorkbookAccess,
@@ -91,6 +98,28 @@ async function getRangeBySource({ sheet, range }) {
   }
   return getWorksheetRangeFromLocalFile({ sheet, range });
 }
+
+app.post('/api/auth/device/start', async (req, res) => {
+  try {
+    const result = await startDeviceCodeLogin();
+    res.json(result);
+  } catch (error) {
+    res.status(getStatusCode(error, 500)).json(buildErrorResponse(error, 'Failed to start device login'));
+  }
+});
+
+app.get('/api/auth/device/poll', async (req, res) => {
+  try {
+    const result = await pollDeviceCodeLogin();
+    res.json(result);
+  } catch (error) {
+    res.status(getStatusCode(error, 500)).json(buildErrorResponse(error, 'Device login poll failed'));
+  }
+});
+
+app.get('/ms-login', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'public', 'ms-login.html'));
+});
 
 app.get('/api/auth/login-url', (req, res) => {
   if (!isGraphSource()) {
@@ -278,21 +307,36 @@ app.get('/api/excel/source', async (req, res) => {
 
 app.get('/api/excel/share-test', async (req, res) => {
   try {
+    if (canAccessCloudWorkbook()) {
+      await checkGraphWorkbookAccess();
+      return res.json({
+        ok: true,
+        method: 'microsoft_login',
+        message: 'OneDrive connected via Microsoft login. Excel Online will work.',
+      });
+    }
     if (!hasShareLinkConfig()) {
       return res.status(400).json({
         ok: false,
-        code: 'SHARE_LINK_MISSING',
-        error: 'Set EXCEL_SHARE_URL in server/.env to a OneDrive link with "Anyone with the link can view".',
+        code: 'ONEDRIVE_SETUP_REQUIRED',
+        error:
+          'Public OneDrive links no longer work for personal accounts. Open http://localhost:4000/ms-login and sign in with Microsoft once.',
+        loginUrl: '/ms-login',
       });
     }
     await checkShareLinkWorkbookAccess();
     return res.json({
       ok: true,
-      message: 'OneDrive share link works. Excel Online changes will appear on the site.',
+      method: 'share_link',
+      message: 'OneDrive share link works.',
       shareUrl: getShareUrl(),
     });
   } catch (error) {
-    return res.status(getStatusCode(error, 401)).json(buildErrorResponse(error, 'Share link test failed'));
+    return res.status(getStatusCode(error, 401)).json({
+      ...buildErrorResponse(error, 'OneDrive access failed'),
+      hint: 'Open /ms-login and sign in with your Microsoft account (one time).',
+      loginUrl: '/ms-login',
+    });
   }
 });
 

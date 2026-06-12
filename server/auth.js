@@ -11,11 +11,21 @@ const tokenCache = {
   account: null,
   state: '',
   stateExpiresAt: 0,
+  deviceCode: '',
+  deviceCodeExpiresAt: 0,
+  deviceInterval: 5,
 };
 
 function loadTokenCache() {
   try {
-    const raw = fs.readFileSync(TOKEN_FILE, 'utf8');
+    let raw = '';
+    if (process.env.MS_AUTH_TOKENS_JSON) {
+      raw = process.env.MS_AUTH_TOKENS_JSON;
+    } else if (fs.existsSync(TOKEN_FILE)) {
+      raw = fs.readFileSync(TOKEN_FILE, 'utf8');
+    }
+    if (!raw) return;
+
     const saved = JSON.parse(raw);
     if (!saved || typeof saved !== 'object') return;
 
@@ -207,7 +217,9 @@ async function getAccessToken() {
 }
 
 function getAuthStatus() {
-  const authenticated = Boolean(tokenCache.accessToken && tokenCache.expiresAt > Date.now());
+  const accessValid = Boolean(tokenCache.accessToken && tokenCache.expiresAt > Date.now());
+  const canRefresh = Boolean(tokenCache.refreshToken);
+  const authenticated = accessValid || canRefresh;
   return {
     ok: true,
     authenticated,
@@ -216,10 +228,94 @@ function getAuthStatus() {
   };
 }
 
+function canAccessCloudWorkbook() {
+  if (!process.env.MS_CLIENT_ID) return false;
+  return getAuthStatus().authenticated;
+}
+
+async function startDeviceCodeLogin() {
+  ensureAuthConfig();
+  const body = new URLSearchParams({
+    client_id: process.env.MS_CLIENT_ID,
+    scope: getScopes(),
+  });
+
+  const response = await fetch(
+    `https://login.microsoftonline.com/${getTenantId()}/oauth2/v2.0/devicecode`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body,
+    }
+  );
+  const payload = await response.json();
+
+  if (!response.ok) {
+    const details = payload.error_description || payload.error || 'device_code_failed';
+    throw createAuthError(`Microsoft device code error: ${details}`, 401, 'AUTH_DEVICE_CODE_FAILED');
+  }
+
+  tokenCache.deviceCode = payload.device_code || '';
+  tokenCache.deviceCodeExpiresAt = Date.now() + Number(payload.expires_in || 900) * 1000;
+  tokenCache.deviceInterval = Number(payload.interval || 5);
+
+  return {
+    ok: true,
+    userCode: payload.user_code,
+    verificationUri: payload.verification_uri || 'https://microsoft.com/devicelogin',
+    message: payload.message,
+    expiresIn: Number(payload.expires_in || 900),
+    interval: tokenCache.deviceInterval,
+  };
+}
+
+async function pollDeviceCodeLogin() {
+  ensureAuthConfig();
+  if (!tokenCache.deviceCode || Date.now() > tokenCache.deviceCodeExpiresAt) {
+    throw createAuthError('Device code expired. Start login again.', 400, 'AUTH_DEVICE_CODE_EXPIRED');
+  }
+
+  const formData = new URLSearchParams({
+    client_id: process.env.MS_CLIENT_ID,
+    grant_type: 'urn:ietf:params:oauth:grant-type:device_code',
+    device_code: tokenCache.deviceCode,
+  });
+
+  const tokenUrl = `https://login.microsoftonline.com/${getTenantId()}/oauth2/v2.0/token`;
+  const response = await fetch(tokenUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: formData,
+  });
+  const payload = await response.json();
+
+  if (response.ok) {
+    saveTokens(payload);
+    tokenCache.deviceCode = '';
+    tokenCache.deviceCodeExpiresAt = 0;
+    return { ok: true, status: 'completed', ...getAuthStatus() };
+  }
+
+  if (payload.error === 'authorization_pending') {
+    return { ok: true, status: 'pending' };
+  }
+
+  if (payload.error === 'slow_down') {
+    tokenCache.deviceInterval += 5;
+    return { ok: true, status: 'pending', slowDown: true };
+  }
+
+  const details = payload.error_description || payload.error || 'device_poll_failed';
+  throw createAuthError(`Microsoft login failed: ${details}`, 401, 'AUTH_DEVICE_POLL_FAILED');
+}
+
 module.exports = {
   buildAuthorizeUrl,
+  canAccessCloudWorkbook,
   createAuthError,
   getAccessToken,
   getAuthStatus,
   handleAuthCallback,
+  pollDeviceCodeLogin,
+  startDeviceCodeLogin,
 };
