@@ -236,16 +236,19 @@
   }
 
   .app-wind-bg-slide {
-    animation: wind-bg-slide-fade var(--slide-cycle, 40s) ease-in-out infinite;
-    animation-delay: var(--slide-delay, 0s);
-    will-change: opacity;
-    transform: none;
+    animation:
+      wind-bg-slide-fade var(--slide-cycle, 40s) ease-in-out infinite,
+      wind-bg-drift 52s ease-in-out infinite alternate;
+    animation-delay: var(--slide-delay, 0s), 0s;
+    will-change: opacity, transform;
   }
 
   .app-wind-bg-slide--mobile-left {
     background-position: 25% center;
-    animation: wind-bg-slide-fade var(--slide-cycle, 40s) ease-in-out infinite;
-    animation-delay: var(--slide-delay, 0s);
+    animation:
+      wind-bg-slide-fade var(--slide-cycle, 40s) ease-in-out infinite,
+      wind-bg-drift-mobile-left 52s ease-in-out infinite alternate;
+    animation-delay: var(--slide-delay, 0s), 0s;
   }
 
   .app-wind-bg-mist {
