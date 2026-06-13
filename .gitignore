@@ -20,6 +20,8 @@
 .env
 server/.env
 server/.auth-tokens.json
+server/.sync-workbook.xlsx
+server/.sync-workbook.meta.json
 
 npm-debug.log*
 yarn-debug.log*

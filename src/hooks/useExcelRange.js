@@ -56,7 +56,7 @@ export function useExcelRange(t) {
       seconds: Math.floor(POLL_INTERVAL_MS / 1000),
       fileSavedAt,
     });
-    if (sourceUsed === 'share_link') {
+    if (sourceUsed === 'share_link' || sourceUsed === 'graph') {
       return `${base} ${t('dataSourceOnline')}`;
     }
     return base;
