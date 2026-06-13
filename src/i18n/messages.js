@@ -14,9 +14,7 @@ export const messages = {
     introTagline: 'Live Excel data, right in your browser',
     userInfoTitle: 'User Info',
     nameLabel: 'Name',
-    idLabel: 'ID',
     passwordLabel: 'Password',
-    fieldsLabel: 'Values',
     autoUpdated: 'Auto-updated at {time} (every {seconds}s). Excel file saved: {fileSavedAt}',
     dataSourceOnline: '(source: Excel Online)',
     dataSourceSync: '(source: cloud sync)',
@@ -31,22 +29,15 @@ export const messages = {
     rulesTitle: 'Rules & guide',
     rulesIntro:
       'Welcome to HydroAir Sistems. This page explains what the site does and how to use it after you sign in.',
-    rulesAboutTitle: 'What is this site?',
-    rulesAboutText:
-      'HydroAir Sistems shows live data from an Excel workbook in your browser. The table updates automatically so you can monitor values without opening the file manually.',
     rulesCanDoTitle: 'What you can do',
-    rulesCanDo1: 'Sign in with your name and password from the workbook user list.',
     rulesCanDo2: 'View your row in a table that looks like Excel (columns and row labels).',
-    rulesCanDo3: 'Switch worksheet tabs at the bottom when the workbook has several sheets.',
     rulesCanDo4: 'Open the menu with “Click me” for profile, language, rules, and logout.',
     rulesCanDo5: 'Change interface language (English, Russian, Armenian).',
-    rulesCanDo6: 'See when data was last refreshed (auto-update every 30 seconds).',
+    rulesCanDo6: 'See refresh status with time and Excel Online source (auto-update every 15 seconds).',
+    rulesCanDo7: 'Hide or show the table with “Hide tables” / “Show tables”.',
     rulesSeeTitle: 'What you will see',
     rulesSeeText:
-      'After login: app title, refresh status, your data table, sheet tabs, the menu button, and footer. In Profile you see your name, ID, password hint, and extra fields count. Errors from the server appear above the table in red.',
-    rulesTipsTitle: 'Tips',
-    rulesTipsText:
-      'Use the same name and password as in the Excel list. If the table is empty, check that the backend is running and the workbook path or link is configured. On mobile, menus open as a panel from the bottom of the screen.',
+      'After login: HydroAir Sistems title, refresh status line, your data table, sheet tabs, the “Click me” button, and footer. In Profile: interface language, name, and password. Server errors appear above the table in red. On mobile, menus open from the bottom of the screen.',
     rulesThanksText:
       'Thank you for using HydroAir Sistems. We appreciate your time and hope the service is helpful for your daily work.',
     clickMe: 'Click me',
@@ -91,9 +82,7 @@ export const messages = {
     introTagline: 'Данные Excel в реальном времени',
     userInfoTitle: 'Пользователь',
     nameLabel: 'Имя',
-    idLabel: 'ID',
     passwordLabel: 'Пароль',
-    fieldsLabel: 'Значения',
     autoUpdated: 'Автообновлено: {time} (каждые {seconds}с). Файл Excel сохранён: {fileSavedAt}',
     dataSourceOnline: '(источник: Excel Online)',
     dataSourceSync: '(источник: облачная синхронизация)',
@@ -108,22 +97,15 @@ export const messages = {
     rulesTitle: 'Правила и справка',
     rulesIntro:
       'Добро пожаловать в HydroAir Sistems. Здесь описано, для чего этот сайт и как им пользоваться после входа.',
-    rulesAboutTitle: 'Для чего этот сайт?',
-    rulesAboutText:
-      'HydroAir Sistems показывает в браузере актуальные данные из книги Excel. Таблица обновляется автоматически — не нужно каждый раз открывать файл вручную.',
     rulesCanDoTitle: 'Что умеет сайт',
-    rulesCanDo1: 'Вход по имени и паролю из списка пользователей в Excel.',
     rulesCanDo2: 'Просмотр вашей строки в таблице в стиле Excel (колонки и буквы строк).',
-    rulesCanDo3: 'Переключение листов внизу, если в книге несколько вкладок.',
     rulesCanDo4: 'Меню «Нажми на меня»: профиль, язык, правила и выход.',
     rulesCanDo5: 'Смена языка интерфейса (английский, русский, армянский).',
-    rulesCanDo6: 'Отображение времени последнего обновления (автообновление каждые 30 секунд).',
+    rulesCanDo6: 'Строка статуса с временем обновления и источником Excel Online (каждые 15 секунд).',
+    rulesCanDo7: 'Кнопки «Скрыть таблицы» / «Показать таблицы» — скрыть или вернуть таблицу.',
     rulesSeeTitle: 'Что видит пользователь',
     rulesSeeText:
-      'После входа: заголовок, статус обновления, таблица с данными, вкладки листов, кнопка меню и подвал. В профиле — имя, ID, пароль и число дополнительных полей. Ошибки сервера показываются над таблицей красным текстом.',
-    rulesTipsTitle: 'Подсказки',
-    rulesTipsText:
-      'Используйте имя и пароль из списка в Excel. Если таблица пустая — проверьте, что backend запущен и указан путь или ссылка на файл. На телефоне меню открывается снизу экрана.',
+      'После входа: название HydroAir Sistems, строка статуса, таблица с данными, вкладки листов, кнопка «Нажми на меня» и подвал. В профиле — язык интерфейса, имя и пароль. Ошибки сервера показываются над таблицей красным текстом. На телефоне меню открывается снизу экрана.',
     rulesThanksText:
       'Спасибо, что пользуетесь HydroAir Sistems. Мы ценим ваше время и надеемся, что сервис помогает вам в работе.',
     clickMe: 'Нажми на меня',
@@ -166,9 +148,7 @@ export const messages = {
     introTagline: 'Excel-ի տվյալները՝ ձեր բրաուզերում',
     userInfoTitle: 'Օգտատեր',
     nameLabel: 'Անուն',
-    idLabel: 'ԻԴ',
     passwordLabel: 'Գաղտնաբառ',
-    fieldsLabel: 'Արժեքներ',
     autoUpdated: 'Թարմացում՝ {time} (ամեն {seconds} վ)։ Excel-ը պահված է՝ {fileSavedAt}',
     dataSourceOnline: '(աղբյուր՝ Excel Online)',
     dataSourceSync: '(աղբյուր՝ PC sync)',
@@ -183,22 +163,15 @@ export const messages = {
     rulesTitle: 'Կանոններ և ուղեցույց',
     rulesIntro:
       'Բարի գալուստ HydroAir Sistems։ Այստեղ նկարագրված է, թե ինչի համար է կայքը և ինչպես օգտագործել մուտքից հետո։',
-    rulesAboutTitle: 'Ինչի համար է այս կայքը',
-    rulesAboutText:
-      'HydroAir Sistems-ը ցույց է տալիս Excel գրքի տվյալները բրաուզերում։ Աղյուսակը ավտոմատ թարմացվում է՝ առանց ֆայլը ձեռքով բացելու։',
     rulesCanDoTitle: 'Ինչ կարելի է անել',
-    rulesCanDo1: 'Մուտք անունով և գաղտնաբառով Excel-ի օգտատերերի ցանկից։',
     rulesCanDo2: 'Ձեր տողի դիտում Excel-ի նման աղյուսակում։',
-    rulesCanDo3: 'Ներքևի ներդիրներով այլ թերթերի միջև անցում, եթե գրքում մի քանի թերթ կա։',
     rulesCanDo4: '«Սեղմիր ինձ» մենյու՝ պրոֆիլ, լեզու, կանոններ, ելք։',
     rulesCanDo5: 'Ինտերֆեյսի լեզվի փոփոխություն (անգլերեն, ռուսերեն, հայերեն)։',
-    rulesCanDo6: 'Վերջին թարմացման ժամը (ավտոմատ՝ յուրաքանչյուր 30 վարկյան)։',
+    rulesCanDo6: 'Թարմացման կարգավիճակ Excel Online աղբյուրով (ավտոմատ՝ յուրաքանչյուր 15 վարկյան)։',
+    rulesCanDo7: '«Թաքցնել աղյուսակները» / «Ցույց տալ աղյուսակները» կոճակներով աղյուսակի ցուցադրում/թաքցում։',
     rulesSeeTitle: 'Ինչ կտեսնեք',
     rulesSeeText:
-      'Մուտքից հետո՝ վերնագիր, թարմացման կարգավիճակ, աղյուսակ, թերթերի ներդիրներ, մենյուի կոճակ և ներքևի հատված։ Պրոֆիլում՝ անուն, ID, գաղտնաբառ և լրացուցիչ դաշտերի քանակ։ Սերվերի սխալները՝ աղյուսակի վերևում կարմիրով։',
-    rulesTipsTitle: 'Խորհուրդներ',
-    rulesTipsText:
-      'Օգտագործեք Excel-ի ցանկի անունն ու գաղտնաբառը։ Դատարկ աղյուսակի դեպքում ստուգեք backend-ը և գրքի ուղին կամ հղումը։ Բջջայինում մենյուն բացվում է էկրանի ներքևից։',
+      'Մուտքից հետո՝ HydroAir Sistems վերնագիր, թարմացման տող, աղյուսակ, թերթերի ներդիրներ, «Սեղմիր ինձ» կոճակ և ներքևի հատված։ Պրոֆիլում՝ լեզու, անուն և գաղտնաբառ։ Սերվերի սխալները՝ աղյուսակի վերևում կարմիրով։ Բջջայինում մենյուն բացվում է էկրանի ներքևից։',
     rulesThanksText:
       'Շնորհակալություն HydroAir Sistems-ից օգտվելու համար։ Գնահատում ենք ձեր ժամանակը և հույսով ենք, որ ծառայությունը օգտակար է ձեր աշխատանքում։',
     clickMe: 'Սեղմիր ինձ',

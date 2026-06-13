@@ -3,12 +3,11 @@ import './modal-shell.css';
 import ModalCloseButton from './ModalCloseButton';
 
 const CAPABILITY_KEYS = [
-  'rulesCanDo1',
   'rulesCanDo2',
-  'rulesCanDo3',
   'rulesCanDo4',
   'rulesCanDo5',
   'rulesCanDo6',
+  'rulesCanDo7',
 ];
 
 function RulesModal({ open, onClose, t }) {
@@ -29,11 +28,6 @@ function RulesModal({ open, onClose, t }) {
           <p className="rules-modal-intro">{t('rulesIntro')}</p>
 
           <section className="rules-modal-section">
-            <h4 className="rules-modal-section-title">{t('rulesAboutTitle')}</h4>
-            <p className="rules-modal-text">{t('rulesAboutText')}</p>
-          </section>
-
-          <section className="rules-modal-section">
             <h4 className="rules-modal-section-title">{t('rulesCanDoTitle')}</h4>
             <ul className="rules-modal-list">
               {CAPABILITY_KEYS.map((key) => (
@@ -45,11 +39,6 @@ function RulesModal({ open, onClose, t }) {
           <section className="rules-modal-section">
             <h4 className="rules-modal-section-title">{t('rulesSeeTitle')}</h4>
             <p className="rules-modal-text">{t('rulesSeeText')}</p>
-          </section>
-
-          <section className="rules-modal-section">
-            <h4 className="rules-modal-section-title">{t('rulesTipsTitle')}</h4>
-            <p className="rules-modal-text">{t('rulesTipsText')}</p>
           </section>
 
           <p className="rules-modal-thanks">{t('rulesThanksText')}</p>

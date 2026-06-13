@@ -21,13 +21,7 @@ function ProfileModal({ t, open, onClose, currentUser, currentLangLabel }) {
             <span>{t('nameLabel')}:</span> {currentUser?.name || '-'}
           </p>
           <p className="profile-line">
-            <span>{t('idLabel')}:</span> {currentUser?.id ?? '-'}
-          </p>
-          <p className="profile-line">
             <span>{t('passwordLabel')}:</span> {currentUser?.password || '-'}
-          </p>
-          <p className="profile-line">
-            <span>{t('fieldsLabel')}:</span> {currentUser?.otherData?.length ?? 0}
           </p>
         </div>
       </div>
