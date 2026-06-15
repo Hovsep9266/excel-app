@@ -1,5 +1,4 @@
 import '../../pages/home-common.css';
-import '../../styles/data-display.css';
 import './LoginFormCard.css';
 
 function LoginFormCard({
@@ -54,7 +53,7 @@ function LoginFormCard({
           {t('loginButton')}
         </button>
       </form>
-      {authError ? <p className="status-text error">{authError}</p> : null}
+      {authError ? <p className="auth-error">{authError}</p> : null}
     </section>
   );
 }

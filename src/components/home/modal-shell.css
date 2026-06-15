@@ -29,7 +29,8 @@
 @media (max-width: 767px) {
   .profile-modal,
   .user-menu-modal,
-  .rules-modal {
+  .rules-modal,
+  .logout-confirm-modal {
     animation: bottom-sheet-slide-up 360ms cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
   }
 }
@@ -38,7 +39,8 @@
   .modal-backdrop,
   .profile-modal,
   .user-menu-modal,
-  .rules-modal {
+  .rules-modal,
+  .logout-confirm-modal {
     animation: none !important;
   }
 

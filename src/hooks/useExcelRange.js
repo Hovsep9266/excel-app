@@ -51,15 +51,15 @@ export function useExcelRange(t) {
     const fileSavedAt = fileLastModifiedAt
       ? new Date(fileLastModifiedAt).toLocaleString()
       : '';
-    const base = t('autoUpdated', {
+    const refreshLine = t('autoUpdatedRefresh', {
       time: lastUpdated,
       seconds: Math.floor(POLL_INTERVAL_MS / 1000),
-      fileSavedAt,
     });
+    let fileLine = t('autoUpdatedFileSaved', { fileSavedAt });
     if (sourceUsed === 'share_link' || sourceUsed === 'graph') {
-      return `${base} ${t('dataSourceOnline')}`;
+      fileLine = `${fileLine} ${t('dataSourceOnline')}`;
     }
-    return base;
+    return `${refreshLine}\n${fileLine}`;
   }, [t, errorMessage, isLoading, lastUpdated, fileLastModifiedAt, sourceUsed]);
 
   return { tableData, errorMessage, isLoading, statusText };

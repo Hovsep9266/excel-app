@@ -6,6 +6,7 @@ import AppLoggedHeader from '../components/home/AppLoggedHeader';
 import AuthLoadingOverlay from '../components/home/AuthLoadingOverlay';
 import IntroOverlay from '../components/home/IntroOverlay';
 import LoginFormCard from '../components/home/LoginFormCard';
+import LogoutConfirmModal from '../components/home/LogoutConfirmModal';
 import ProfileModal from '../components/home/ProfileModal';
 import RulesModal from '../components/home/RulesModal';
 import UserMenuModal from '../components/home/UserMenuModal';
@@ -23,6 +24,7 @@ function HomePage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [rulesOpen, setRulesOpen] = useState(false);
+  const [logoutConfirmOpen, setLogoutConfirmOpen] = useState(false);
   const [languagePickOpen, setLanguagePickOpen] = useState(false);
   const [tablesExpanded, setTablesExpanded] = useState(true);
 
@@ -31,16 +33,17 @@ function HomePage() {
   }, [languageOptions, lang]);
 
   useEffect(() => {
-    if (!menuOpen && !profileOpen && !rulesOpen) return;
+    if (!menuOpen && !profileOpen && !rulesOpen && !logoutConfirmOpen) return;
     const onKeyDown = (e) => {
       if (e.key !== 'Escape') return;
-      if (rulesOpen) setRulesOpen(false);
+      if (logoutConfirmOpen) setLogoutConfirmOpen(false);
+      else if (rulesOpen) setRulesOpen(false);
       else if (profileOpen) setProfileOpen(false);
       else setMenuOpen(false);
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [menuOpen, profileOpen, rulesOpen]);
+  }, [menuOpen, profileOpen, rulesOpen, logoutConfirmOpen]);
 
   useEffect(() => {
     if (!menuOpen) setLanguagePickOpen(false);
@@ -51,7 +54,14 @@ function HomePage() {
     setMenuOpen(false);
     setProfileOpen(false);
     setRulesOpen(false);
+    setLogoutConfirmOpen(false);
     setLanguagePickOpen(false);
+  };
+
+  const handleLogoutRequest = () => {
+    setMenuOpen(false);
+    setLanguagePickOpen(false);
+    setLogoutConfirmOpen(true);
   };
 
   return (
@@ -120,7 +130,7 @@ function HomePage() {
                 setMenuOpen(false);
                 setLanguagePickOpen(false);
               }}
-              onLogout={handleLogout}
+              onLogout={handleLogoutRequest}
               languagePickOpen={languagePickOpen}
               onToggleLanguagePick={() => setLanguagePickOpen((v) => !v)}
               currentLangLabel={currentLangLabel}
@@ -140,6 +150,13 @@ function HomePage() {
             />
 
             <RulesModal t={t} open={rulesOpen} onClose={() => setRulesOpen(false)} />
+
+            <LogoutConfirmModal
+              t={t}
+              open={logoutConfirmOpen}
+              onClose={() => setLogoutConfirmOpen(false)}
+              onConfirm={handleLogout}
+            />
           </div>
         )}
         <SiteFooterBar t={t} />
