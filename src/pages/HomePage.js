@@ -86,11 +86,8 @@ function HomePage() {
           ) : null
         ) : (
           <div className="logged-page">
-            <AppLoggedHeader t={t} />
+            <AppLoggedHeader statusText={statusText} isError={Boolean(errorMessage)} />
             <div className="logged-layout">
-              <p className={errorMessage ? 'status-text error logged-status' : 'status-text logged-status'}>
-                {statusText}
-              </p>
               <aside className={`menu-area${tablesExpanded ? '' : ' menu-area--collapsed'}`}>
                 <button
                   className="clickme-button"

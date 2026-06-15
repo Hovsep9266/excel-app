@@ -7,7 +7,6 @@ export function useExcelRange(t) {
   const [errorMessage, setErrorMessage] = useState('');
   const [lastUpdated, setLastUpdated] = useState('');
   const [fileLastModifiedAt, setFileLastModifiedAt] = useState('');
-  const [sourceUsed, setSourceUsed] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const loadRange = useCallback(async () => {
@@ -20,7 +19,6 @@ export function useExcelRange(t) {
       });
       setTableData(response.values || []);
       setFileLastModifiedAt(response.fileLastModifiedAt || '');
-      setSourceUsed(response.sourceUsed || '');
       setLastUpdated(new Date().toLocaleTimeString());
     } catch (error) {
       setErrorMessage(error.message || 'Failed to load Excel range.');
@@ -48,19 +46,10 @@ export function useExcelRange(t) {
     if (errorMessage) return `${t('errorPrefix')} ${errorMessage}`;
     if (isLoading && !lastUpdated) return t('loading');
     if (!lastUpdated) return t('waitingForData');
-    const fileSavedAt = fileLastModifiedAt
-      ? new Date(fileLastModifiedAt).toLocaleString()
-      : '';
-    const refreshLine = t('autoUpdatedRefresh', {
-      time: lastUpdated,
-      seconds: Math.floor(POLL_INTERVAL_MS / 1000),
-    });
-    let fileLine = t('autoUpdatedFileSaved', { fileSavedAt });
-    if (sourceUsed === 'share_link' || sourceUsed === 'graph') {
-      fileLine = `${fileLine} ${t('dataSourceOnline')}`;
-    }
-    return `${refreshLine}\n${fileLine}`;
-  }, [t, errorMessage, isLoading, lastUpdated, fileLastModifiedAt, sourceUsed]);
+    if (!fileLastModifiedAt) return '';
+    const fileSavedAt = new Date(fileLastModifiedAt).toLocaleString();
+    return t('fileSavedAt', { fileSavedAt });
+  }, [t, errorMessage, isLoading, lastUpdated, fileLastModifiedAt]);
 
   return { tableData, errorMessage, isLoading, statusText };
 }

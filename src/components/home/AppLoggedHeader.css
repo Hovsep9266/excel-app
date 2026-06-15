@@ -22,6 +22,18 @@
   min-width: 0;
 }
 
+.app-header-status {
+  margin: 10px 0 0;
+  color: #cbd5e1;
+  font-size: 0.92rem;
+  line-height: 1.4;
+  text-shadow: 0 1px 8px rgba(2, 6, 23, 0.45);
+}
+
+.app-header-status--error {
+  color: #fda4af;
+}
+
 .app-site-icon {
   width: 96px;
   height: 96px;
@@ -54,6 +66,7 @@
   .app-header {
     gap: 10px;
     align-items: flex-start;
+    margin-bottom: 8px;
   }
 
   .app-header-copy {
@@ -69,6 +82,12 @@
     width: 2.5rem;
     height: 2px;
     margin-top: 5px;
+  }
+
+  .app-header-status {
+    margin-top: 8px;
+    margin-bottom: 12px;
+    font-size: 0.84rem;
   }
 
   .app-site-icon {

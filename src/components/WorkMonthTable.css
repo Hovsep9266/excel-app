@@ -20,7 +20,7 @@
   display: none;
 }
 
-.work-month-section + .work-month-section {
+.work-month-section+.work-month-section {
   border-top: 1px solid rgba(125, 211, 252, 0.15);
 }
 

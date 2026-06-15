@@ -52,6 +52,18 @@
   justify-content: flex-start;
 }
 
+@media (min-width: 768px) {
+  .logged-layout .table-area {
+    margin-top: 40px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .logged-layout .table-area {
+    margin-top: 48px;
+  }
+}
+
 .menu-area {
   position: fixed;
   right: 0px;
@@ -142,6 +154,10 @@
     gap: 12px;
   }
 
+  .logged-layout .table-area {
+    margin-top: 16px;
+  }
+
   .logged-status {
     order: -2;
     margin-bottom: 10px;
@@ -157,7 +173,8 @@
     z-index: 1;
     justify-content: stretch;
     order: -1;
-    margin-bottom: 4px;
+    margin-top: 8px;
+    margin-bottom: 12px;
     flex-shrink: 0;
     max-height: 80px;
   }
