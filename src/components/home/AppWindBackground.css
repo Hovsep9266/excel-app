@@ -29,7 +29,7 @@
   will-change: opacity, transform, background-position;
   animation:
     wind-bg-slide-fade var(--slide-cycle, 40s) ease-in-out infinite,
-    wind-bg-drift 52s ease-in-out infinite alternate;
+    wind-bg-drift 20s ease-in-out infinite alternate;
   animation-delay: var(--slide-delay, 0s), 0s;
 }
 
@@ -188,40 +188,65 @@
   left: 5%;
   animation-delay: 10s;
   animation-duration: 14s;
-  /* transform: scale(1.05); */
+  transform: scale(1.05);
 }
 
 @keyframes wind-bg-drift {
   0% {
-    background-position: 48% 44%;
-    /* transform: scale(1.04); */
+    background-position: 44% 44%;
+    transform: scale(1.04);
   }
 
   50% {
-    background-position: 54% 46%;
-    /* transform: scale(1.06); */
+    background-position: 58% 46%;
+    transform: scale(1.06);
   }
 
   100% {
-    background-position: 50% 40%;
-    /* transform: scale(1.04); */
+    background-position: 48% 40%;
+    transform: scale(1.04);
   }
 }
 
 @keyframes wind-bg-drift-mobile-left {
   0% {
-    background-position: 22% 42%;
-    /* transform: scale(1.04); */
+    background-position: 16% center;
   }
 
   50% {
-    background-position: 28% 44%;
-    /* transform: scale(1.06); */
+    background-position: 30% center;
   }
 
   100% {
-    background-position: 24% 40%;
-    /* transform: scale(1.04); */
+    background-position: 20% center;
+  }
+}
+
+@keyframes wind-bg-drift-mobile-right {
+  0% {
+    background-position: 76% center;
+  }
+
+  50% {
+    background-position: 88% center;
+  }
+
+  100% {
+    background-position: 80% center;
+  }
+}
+
+@keyframes wind-bg-drift-mobile-center {
+  0% {
+    background-position: 46% center;
+  }
+
+  50% {
+    background-position: 58% center;
+  }
+
+  100% {
+    background-position: 50% center;
   }
 }
 
@@ -236,22 +261,26 @@
   }
 
   .app-wind-bg-slide {
-    animation: wind-bg-slide-fade var(--slide-cycle, 40s) ease-in-out infinite;
-    animation-delay: var(--slide-delay, 0s);
-    will-change: opacity;
+    animation:
+      wind-bg-slide-fade var(--slide-cycle, 40s) ease-in-out infinite,
+      wind-bg-drift-mobile-center 18s ease-in-out infinite alternate;
+    animation-delay: var(--slide-delay, 0s), 0s;
+    will-change: opacity, background-position;
     transform: none;
   }
 
   .app-wind-bg-slide--mobile-left {
-    background-position: 25% center;
-    animation: wind-bg-slide-fade var(--slide-cycle, 40s) ease-in-out infinite;
-    animation-delay: var(--slide-delay, 0s);
+    animation:
+      wind-bg-slide-fade var(--slide-cycle, 40s) ease-in-out infinite,
+      wind-bg-drift-mobile-left 16s ease-in-out infinite alternate;
+    animation-delay: var(--slide-delay, 0s), 0s;
   }
 
   .app-wind-bg-slide--mobile-right {
-    background-position: 82% center;
-    animation: wind-bg-slide-fade var(--slide-cycle, 40s) ease-in-out infinite;
-    animation-delay: var(--slide-delay, 0s);
+    animation:
+      wind-bg-slide-fade var(--slide-cycle, 40s) ease-in-out infinite,
+      wind-bg-drift-mobile-right 16s ease-in-out infinite alternate;
+    animation-delay: var(--slide-delay, 0s), 0s;
   }
 
   .app-wind-bg-mist {
