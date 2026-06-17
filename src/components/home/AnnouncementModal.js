@@ -30,6 +30,10 @@ function AnnouncementModal({
   const hasAnnouncement = Boolean(currentAnnouncement?.text);
   const selectAllRef = useRef(null);
 
+  const trimmedText = text.trim();
+  const hasRecipients = selectedIds.length > 0;
+  const canSubmit = Boolean(trimmedText) && hasRecipients && !isSaving && !isDeleting;
+  const showRecipientsError = Boolean(trimmedText) && !hasRecipients;
   const allSelected =
     selectableUserIds.length > 0 && selectableUserIds.every((id) => selectedIds.includes(id));
   const someSelected =
@@ -71,6 +75,10 @@ function AnnouncementModal({
     const trimmed = text.trim();
     if (!trimmed) {
       setErrorMessage(t('announcementTextRequired'));
+      return;
+    }
+
+    if (!selectedIds.length) {
       return;
     }
 
@@ -142,6 +150,10 @@ function AnnouncementModal({
             ))}
           </div>
 
+          {showRecipientsError ? (
+            <p className="announcement-error announcement-recipients-error">{t('announcementRecipientsRequired')}</p>
+          ) : null}
+
           <label className="announcement-text-label" htmlFor="announcement-text">
             {t('announcementTextLabel')}
           </label>
@@ -167,7 +179,11 @@ function AnnouncementModal({
                 {isDeleting ? t('loading') : t('announcementDelete')}
               </button>
             ) : null}
-            <button type="submit" className="announcement-submit-btn" disabled={isSaving || isDeleting}>
+            <button
+              type="submit"
+              className="announcement-submit-btn"
+              disabled={!canSubmit}
+            >
               {isSaving ? t('loading') : t('announcementSubmit')}
             </button>
           </div>
