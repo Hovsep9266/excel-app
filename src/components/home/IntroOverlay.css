@@ -12,10 +12,10 @@
 .intro-splash {
   z-index: 1000;
   position: fixed;
-  right: 20px;
-  top: 40px;
+  right: 10px;
+  top: 10px;
   width: 80%;
-  height: 85%;
+  height: 90%;
   border-radius: 28px;
   border: 1px solid #334155;
   background: linear-gradient(145deg, #0f172a 0%, #172554 42%, #1e293b 100%);
@@ -34,9 +34,22 @@
   overflow: hidden;
 }
 
-@media (min-width: 480px) {
+@media (min-width: 428px) {
   .intro-splash {
     width: 83%;
+  }
+}
+
+@media (min-width: 500px) {
+  .intro-splash {
+    width: 85%;
+  }
+}
+
+
+@media (min-width: 560px) {
+  .intro-splash {
+    width: 88%;
   }
 }
 
@@ -47,17 +60,35 @@
   }
 }
 
+
+@media (min-width: 744px) {
+  .intro-splash {
+    width: 92%;
+  }
+}
+
 @media (min-width: 1024px) {
   .intro-splash {
-    width: 91%;
-    height: 86%;
+    width: 93%;
+    height: 90%;
+  }
+}
+
+@media (min-width: 1280px) {
+  .intro-splash {
+    width: 94%;
   }
 }
 
 @media (min-width: 1440px) {
   .intro-splash {
-    width: 94%;
-    height: 87%;
+    width: 95%;
+  }
+
+  @media (min-width: 1920px) {
+    .intro-splash {
+      width: 96%;
+    }
   }
 }
 
