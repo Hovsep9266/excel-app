@@ -24,6 +24,12 @@ const {
 } = require('./hybridWorkbookClient');
 const { checkPublicWorkbookAccess, getWorksheetRangeFromPublicLink } = require('./publicWorkbookClient');
 const { checkShareLinkWorkbookAccess, getShareUrl } = require('./shareLinkWorkbookClient');
+const {
+  clearAnnouncement,
+  isAnnouncementAdmin,
+  readAnnouncement,
+  saveAnnouncement,
+} = require('./announcementStore');
 
 dotenv.config({ path: path.join(__dirname, '.env'), override: true });
 
@@ -389,6 +395,68 @@ app.get('/api/excel/range', async (req, res) => {
       range: String(range).trim(),
     });
   }
+});
+
+app.get('/api/announcements', (req, res) => {
+  const announcement = readAnnouncement();
+  res.json({
+    ok: true,
+    announcement,
+  });
+});
+
+app.post('/api/announcements', (req, res) => {
+  const { text, recipientIds, recipientKeys, userId, userName } = req.body || {};
+
+  if (!isAnnouncementAdmin({ userId, userName })) {
+    return res.status(403).json({
+      ok: false,
+      code: 'ANNOUNCEMENT_FORBIDDEN',
+      error: 'Only the first user (ISO) can publish announcements.',
+    });
+  }
+
+  const trimmedText = String(text || '').trim();
+  if (!trimmedText) {
+    return res.status(400).json({
+      ok: false,
+      code: 'ANNOUNCEMENT_TEXT_REQUIRED',
+      error: 'Announcement text is required.',
+    });
+  }
+
+  const ids = Array.isArray(recipientIds)
+    ? recipientIds.map((id) => Number(id)).filter((id) => id > 0)
+    : [];
+  const keys = Array.isArray(recipientKeys)
+    ? recipientKeys.map((key) => String(key || '').trim().toLowerCase()).filter(Boolean)
+    : [];
+
+  const announcement = saveAnnouncement({
+    text: trimmedText,
+    recipientIds: ids,
+    recipientKeys: keys,
+    createdBy: String(userName || '').trim(),
+    adminUserId: userId,
+    adminUserName: userName,
+  });
+
+  res.json({ ok: true, announcement });
+});
+
+app.delete('/api/announcements', (req, res) => {
+  const { userId, userName } = req.body || {};
+
+  if (!isAnnouncementAdmin({ userId, userName })) {
+    return res.status(403).json({
+      ok: false,
+      code: 'ANNOUNCEMENT_FORBIDDEN',
+      error: 'Only the first user (ISO) can delete announcements.',
+    });
+  }
+
+  clearAnnouncement();
+  res.json({ ok: true, announcement: null });
 });
 
 if (isProduction) {

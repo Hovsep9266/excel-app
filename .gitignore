@@ -22,6 +22,7 @@ server/.env
 server/.auth-tokens.json
 server/.sync-workbook.xlsx
 server/.sync-workbook.meta.json
+server/.announcement.json
 
 npm-debug.log*
 yarn-debug.log*

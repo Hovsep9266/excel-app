@@ -1,15 +1,22 @@
 .app-shell {
+  --shell-padding-top: 40px;
+  --menu-top-base: 112px;
   position: relative;
   isolation: isolate;
   height: 100vh;
   height: 100dvh;
   background-color: #0f172a;
   color: #e2e8f0;
-  padding: 40px 20px;
+  padding: var(--shell-padding-top) 20px 40px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+}
+
+.app-shell--with-announcement {
+  --shell-padding-top: 0px;
+  padding-top: 0;
 }
 
 .app-container {
@@ -54,20 +61,22 @@
 
 @media (min-width: 768px) {
   .logged-layout .table-area {
-    margin-top: 40px;
+    margin-top: 42px;
   }
 }
 
 @media (min-width: 1200px) {
   .logged-layout .table-area {
-    margin-top: 48px;
+    margin-top: 40px;
   }
 }
 
 .menu-area {
   position: fixed;
   right: 0px;
-  top: 120px;
+  top: calc(
+    var(--announcement-banner-height, 0px) + var(--menu-top-base, 112px) + var(--shell-padding-top, 40px)
+  );
   z-index: 99;
   display: flex;
   justify-content: flex-end;
@@ -89,15 +98,15 @@
   pointer-events: none;
 }
 
-@media (max-width: 767px) {
-  .menu-area {
-    top: 80px;
-  }
-}
-
 @media (min-width: 1200px) {
-  .menu-area {
-    top: 140px;
+  .app-shell {
+    --shell-padding-top: 36px;
+    --menu-top-base: 122px;
+    padding: var(--shell-padding-top) 28px 36px;
+  }
+
+  .app-shell--with-announcement {
+    --shell-padding-top: 0px;
   }
 }
 
@@ -129,21 +138,26 @@
   border-bottom-color: #7dd3fc;
 }
 
-@media (min-width: 1200px) {
-  .app-shell {
-    padding: 36px 28px;
-  }
-}
-
 @media (min-width: 768px) and (max-width: 1199px) {
   .app-shell {
-    padding: 24px 16px;
+    --shell-padding-top: 24px;
+    --menu-top-base: 104px;
+    padding: var(--shell-padding-top) 16px 24px;
+  }
+
+  .app-shell--with-announcement {
+    --shell-padding-top: 0px;
   }
 }
 
 @media (max-width: 767px) {
   .app-shell {
-    padding: 14px 10px;
+    --shell-padding-top: 14px;
+    padding: var(--shell-padding-top) 10px 14px;
+  }
+
+  .app-shell--with-announcement {
+    --shell-padding-top: 0px;
   }
 
   .app-container {
@@ -152,10 +166,6 @@
 
   .logged-layout {
     gap: 12px;
-  }
-
-  .logged-layout .table-area {
-    margin-top: 16px;
   }
 
   .logged-status {

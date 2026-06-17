@@ -1,0 +1,71 @@
+.announcement-banner {
+
+  flex-shrink: 0;
+
+  position: relative;
+  z-index: 0;
+  width: 100vw;
+
+  max-width: 100vw;
+
+  margin: 0;
+  margin-bottom: 20px;
+  margin-left: calc(50% - 50vw);
+
+  padding: 10px 16px;
+
+  border-radius: 0;
+
+  border: none;
+
+  border-bottom: 1px solid rgba(250, 204, 21, 0.45);
+
+  background: linear-gradient(90deg, rgba(113, 63, 18, 0.95), rgba(30, 41, 59, 0.95));
+
+  box-shadow: 0 8px 24px rgba(2, 6, 23, 0.35);
+
+  box-sizing: border-box;
+
+}
+
+
+
+.announcement-banner-text {
+
+  margin: 0;
+
+  color: #fef3c7;
+
+  font-size: 0.95rem;
+
+  line-height: 1.45;
+
+  text-align: center;
+
+  white-space: pre-wrap;
+
+  word-break: break-word;
+
+  overflow-wrap: anywhere;
+
+}
+
+
+
+@media (max-width: 767px) {
+
+  .announcement-banner {
+
+    padding: 8px 12px;
+
+  }
+
+
+
+  .announcement-banner-text {
+
+    font-size: 0.88rem;
+
+  }
+
+}

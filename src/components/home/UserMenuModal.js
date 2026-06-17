@@ -1,6 +1,7 @@
 import './UserMenuModal.css';
 import './modal-shell.css';
 import ModalCloseButton from './ModalCloseButton';
+import MenuMusicControls from './MenuMusicControls';
 
 function UserMenuModal({
   open,
@@ -9,12 +10,17 @@ function UserMenuModal({
   t,
   onProfile,
   onRules,
+  onAnnouncement,
+  canManageAnnouncements,
   onLogout,
   languagePickOpen,
   onToggleLanguagePick,
   currentLangLabel,
   languageOptions,
   onSelectLanguage,
+  musicHasTracks,
+  musicIsPlaying,
+  onToggleMusic,
 }) {
   if (!open) return null;
 
@@ -44,6 +50,19 @@ function UserMenuModal({
           <button className="user-menu-modal-row" type="button" onClick={onRules}>
             {t('menuRules')}
           </button>
+
+          {canManageAnnouncements ? (
+            <button className="user-menu-modal-row" type="button" onClick={onAnnouncement}>
+              {t('menuAnnouncement')}
+            </button>
+          ) : null}
+
+          <MenuMusicControls
+            t={t}
+            hasTracks={musicHasTracks}
+            isPlaying={musicIsPlaying}
+            onToggle={onToggleMusic}
+          />
 
           <div className="user-menu-modal-section">
             <div className="user-menu-modal-section-label">{t('menuLanguage')}</div>

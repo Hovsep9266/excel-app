@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from 'react';
 import './HomePage.css';
 import '../styles/data-display.css';
 import AppWindBackground from '../components/home/AppWindBackground';
+import AnnouncementBanner from '../components/home/AnnouncementBanner';
+import AnnouncementModal from '../components/home/AnnouncementModal';
 import AppLoggedHeader from '../components/home/AppLoggedHeader';
 import AuthLoadingOverlay from '../components/home/AuthLoadingOverlay';
 import IntroOverlay from '../components/home/IntroOverlay';
@@ -12,38 +14,57 @@ import RulesModal from '../components/home/RulesModal';
 import UserMenuModal from '../components/home/UserMenuModal';
 import SiteFooterBar from '../components/home/SiteFooterBar';
 import UserDataSection from '../components/home/UserDataSection';
+import { menuMusicTracks } from '../constants/menuMusic';
+import { useAnnouncements } from '../hooks/useAnnouncements';
 import { useExcelRange } from '../hooks/useExcelRange';
 import { useHomeAuth } from '../hooks/useHomeAuth';
+import { useMenuMusic } from '../hooks/useMenuMusic';
 import { useI18n } from '../i18n/i18n';
+import { canUserSeeAnnouncement, isAnnouncementAdmin, normalizeUserKey } from '../utils/isAnnouncementAdmin';
 
 function HomePage() {
   const { t, languageOptions, setLang, lang } = useI18n();
   const { tableData, errorMessage, statusText } = useExcelRange(t);
   const auth = useHomeAuth({ tableData, t });
+  const announcements = useAnnouncements();
+  const menuMusic = useMenuMusic(menuMusicTracks);
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [rulesOpen, setRulesOpen] = useState(false);
+  const [announcementOpen, setAnnouncementOpen] = useState(false);
   const [logoutConfirmOpen, setLogoutConfirmOpen] = useState(false);
   const [languagePickOpen, setLanguagePickOpen] = useState(false);
   const [tablesExpanded, setTablesExpanded] = useState(true);
+  const [announcementBannerHeight, setAnnouncementBannerHeight] = useState(0);
 
   const currentLangLabel = useMemo(() => {
     return languageOptions.find((opt) => opt.id === lang)?.label || lang;
   }, [languageOptions, lang]);
 
+  const canManageAnnouncements = useMemo(
+    () => isAnnouncementAdmin(auth.currentUser),
+    [auth.currentUser]
+  );
+
+  const visibleAnnouncementText = useMemo(() => {
+    if (!canUserSeeAnnouncement(auth.currentUser, announcements.announcement)) return '';
+    return announcements.announcement?.text || '';
+  }, [auth.currentUser, announcements.announcement]);
+
   useEffect(() => {
-    if (!menuOpen && !profileOpen && !rulesOpen && !logoutConfirmOpen) return;
+    if (!menuOpen && !profileOpen && !rulesOpen && !logoutConfirmOpen && !announcementOpen) return;
     const onKeyDown = (e) => {
       if (e.key !== 'Escape') return;
       if (logoutConfirmOpen) setLogoutConfirmOpen(false);
+      else if (announcementOpen) setAnnouncementOpen(false);
       else if (rulesOpen) setRulesOpen(false);
       else if (profileOpen) setProfileOpen(false);
       else setMenuOpen(false);
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [menuOpen, profileOpen, rulesOpen, logoutConfirmOpen]);
+  }, [menuOpen, profileOpen, rulesOpen, logoutConfirmOpen, announcementOpen]);
 
   useEffect(() => {
     if (!menuOpen) setLanguagePickOpen(false);
@@ -54,6 +75,7 @@ function HomePage() {
     setMenuOpen(false);
     setProfileOpen(false);
     setRulesOpen(false);
+    setAnnouncementOpen(false);
     setLogoutConfirmOpen(false);
     setLanguagePickOpen(false);
   };
@@ -64,11 +86,28 @@ function HomePage() {
     setLogoutConfirmOpen(true);
   };
 
+  const hasVisibleAnnouncement = Boolean(auth.currentUser && visibleAnnouncementText);
+
+  useEffect(() => {
+    if (!hasVisibleAnnouncement) {
+      setAnnouncementBannerHeight(0);
+    }
+  }, [hasVisibleAnnouncement]);
+
   return (
-    <main className="app-shell">
+    <main
+      className={`app-shell${hasVisibleAnnouncement ? ' app-shell--with-announcement' : ''}`}
+      style={{ '--announcement-banner-height': `${announcementBannerHeight}px` }}
+    >
       <AppWindBackground />
       <AuthLoadingOverlay visible={auth.showAuthLoading && !auth.currentUser} loadingText={t('loading')} />
       <IntroOverlay visible={auth.showIntro} />
+      {hasVisibleAnnouncement ? (
+        <AnnouncementBanner
+          text={visibleAnnouncementText}
+          onHeightChange={setAnnouncementBannerHeight}
+        />
+      ) : null}
       <div className={`app-container${auth.currentUser ? ' app-container--logged-in' : ''}`}>
         {!auth.currentUser ? (
           !auth.showAuthLoading ? (
@@ -120,6 +159,7 @@ function HomePage() {
                 setProfileOpen(true);
                 setMenuOpen(false);
                 setRulesOpen(false);
+                setAnnouncementOpen(false);
                 setLanguagePickOpen(false);
               }}
               onRules={() => {
@@ -127,6 +167,14 @@ function HomePage() {
                 setMenuOpen(false);
                 setLanguagePickOpen(false);
               }}
+              onAnnouncement={() => {
+                setAnnouncementOpen(true);
+                setMenuOpen(false);
+                setProfileOpen(false);
+                setRulesOpen(false);
+                setLanguagePickOpen(false);
+              }}
+              canManageAnnouncements={canManageAnnouncements}
               onLogout={handleLogoutRequest}
               languagePickOpen={languagePickOpen}
               onToggleLanguagePick={() => setLanguagePickOpen((v) => !v)}
@@ -136,6 +184,9 @@ function HomePage() {
                 setLang(id);
                 setLanguagePickOpen(false);
               }}
+              musicHasTracks={menuMusic.hasTracks}
+              musicIsPlaying={menuMusic.isPlaying}
+              onToggleMusic={menuMusic.togglePlayback}
             />
 
             <ProfileModal
@@ -147,6 +198,32 @@ function HomePage() {
             />
 
             <RulesModal t={t} open={rulesOpen} onClose={() => setRulesOpen(false)} />
+
+            <AnnouncementModal
+              t={t}
+              open={announcementOpen}
+              onClose={() => setAnnouncementOpen(false)}
+              allUsers={auth.allUsers}
+              currentAnnouncement={announcements.announcement}
+              onSubmit={({ text, recipientIds }) => {
+                const recipientKeys = auth.allUsers
+                  .filter((user) => recipientIds.includes(user.id))
+                  .map((user) => normalizeUserKey(user.name));
+                return announcements.publishAnnouncement({
+                  text,
+                  recipientIds,
+                  recipientKeys,
+                  userId: auth.currentUser?.id,
+                  userName: auth.currentUser?.name,
+                });
+              }}
+              onDelete={() =>
+                announcements.removeAnnouncement({
+                  userId: auth.currentUser?.id,
+                  userName: auth.currentUser?.name,
+                })
+              }
+            />
 
             <LogoutConfirmModal
               t={t}

@@ -6,7 +6,7 @@ const CAPABILITY_KEYS = [
   'rulesCanDo2',
   'rulesCanDo4',
   'rulesCanDo5',
-  'rulesCanDo6',
+  'rulesCanDo8',
   'rulesCanDo7',
 ];
 

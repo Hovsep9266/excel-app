@@ -30,7 +30,8 @@
   .profile-modal,
   .user-menu-modal,
   .rules-modal,
-  .logout-confirm-modal {
+  .logout-confirm-modal,
+  .announcement-modal {
     animation: bottom-sheet-slide-up 360ms cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
   }
 }
@@ -40,7 +41,8 @@
   .profile-modal,
   .user-menu-modal,
   .rules-modal,
-  .logout-confirm-modal {
+  .logout-confirm-modal,
+  .announcement-modal {
     animation: none !important;
   }
 

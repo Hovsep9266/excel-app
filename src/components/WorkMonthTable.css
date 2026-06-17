@@ -38,13 +38,30 @@
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-x: contain;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
   box-sizing: border-box;
+  padding-bottom: 2px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(125, 212, 252, 0.161) rgba(2, 6, 23, 0.45);
 }
 
 .work-table-x-scroll::-webkit-scrollbar {
-  display: none;
+  display: block;
+  height: 6px;
+}
+
+.work-table-x-scroll::-webkit-scrollbar-track {
+  margin-top: 4px;
+  border-radius: 999px;
+  background: rgba(2, 6, 23, 0.55);
+}
+
+.work-table-x-scroll::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(125, 212, 252, 0.353);
+}
+
+.work-table-x-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(125, 212, 252, 0.308);
 }
 
 .work-month-table {
@@ -140,5 +157,15 @@
   .work-month-name,
   .work-row-label {
     min-width: 72px;
+  }
+
+  .work-table-x-scroll {
+    padding-bottom: 0;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .work-table-x-scroll::-webkit-scrollbar {
+    display: none;
   }
 }

@@ -151,5 +151,6 @@ export function useHomeAuth({ tableData, t }) {
     handleLogin,
     handleLogout,
     userMonthBlocks,
+    allUsers: builtObjects,
   };
 }
