@@ -263,7 +263,7 @@ describe('parseUserWorkMonths summary layout', () => {
     expect(workers.some((worker) => worker.name === 'բ Սերգեյ')).toBe(true);
     expect(workers.some((worker) => worker.name === 'Նավո')).toBe(true);
 
-    const blocks = parseUserWorkMonths(rows, 'Սերգեյ');
+    const blocks = parseUserWorkMonths(rows, 'բ Սերգեյ');
     expect(blocks).toHaveLength(1);
     expect(blocks[0].month).toBe('Հունիս');
   });
@@ -381,6 +381,36 @@ describe('parseUserWorkMonths summary layout', () => {
     expect(danielPBlocks[0].amounts[0]).toBe('12');
   });
 
+  it('keeps բ prefixed names separate from the same name without prefix', () => {
+    const rows = [
+      buildMonthTitleRow('Մայիս'),
+      buildDayHeaderRow(3),
+      ['Դանել', 12, '', '8', '8', ''],
+      buildDayHeaderRow(3),
+      ['Դանել', 12, '', '100', '100', ''],
+      ['Հունիս', '', '', '', '', '', ''],
+      buildDayHeaderRow(3),
+      ['Ատլանտիս', 'բ Դանել', 17, '', '4', ''],
+      ['Ատլանտիս', 'բ Սերգեյ', 16, '', '13', ''],
+    ];
+
+    const workers = extractWorkersFromSheet(rows);
+    expect(workers.some((worker) => worker.name === 'Դանել')).toBe(true);
+    expect(workers.some((worker) => worker.name === 'բ Դանել')).toBe(true);
+    expect(workers.filter((worker) => worker.name === 'բ Դանել')).toHaveLength(1);
+
+    expect(parseUserWorkMonths(rows, 'Դանել').some((block) => block.month === 'Մայիս')).toBe(true);
+    expect(parseUserWorkMonths(rows, 'Դանել').some((block) => block.month === 'Հունիս')).toBe(false);
+    expect(parseUserWorkMonths(rows, 'բ Դանել')).toHaveLength(1);
+    expect(parseUserWorkMonths(rows, 'բ Դանել')[0].month).toBe('Հունիս');
+
+    const daniel = workers.find((worker) => worker.name === 'Դանել');
+    const bDaniel = workers.find((worker) => worker.name === 'բ Դանել');
+    expect(findWorkerForLogin(workers, 'Դանել', daniel.password).ok).toBe(true);
+    expect(findWorkerForLogin(workers, 'բ Դանել', bDaniel.password).ok).toBe(true);
+    expect(findWorkerForLogin(workers, 'Դանել', bDaniel.password).ok).toBe(false);
+  });
+
   it('logs in with optional բ prefix and normalized password', () => {
     const rows = [
       ['Հունիս', '', '', '', '', '', ''],
@@ -484,7 +514,7 @@ describe('parseUserWorkMonths summary layout', () => {
     expect(lyovBlocks).toHaveLength(1);
     expect(lyovBlocks[0].month).toBe('Հունիս');
 
-    const markBlocks = parseUserWorkMonths(rows, 'Մարկ');
+    const markBlocks = parseUserWorkMonths(rows, 'բ Մարկ');
     expect(markBlocks).toHaveLength(1);
     expect(markBlocks[0].month).toBe('Հունիս');
   });

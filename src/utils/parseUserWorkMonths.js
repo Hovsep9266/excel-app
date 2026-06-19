@@ -18,9 +18,27 @@ function normalizeDisplayName(value) {
 }
 
 function normalizeNameForMatch(value) {
-  return normalizeName(value)
-    .replace(/^բ\s+/, '')
-    .replace(/իել/g, 'ել');
+  return normalizeName(value).replace(/իել/g, 'ել');
+}
+
+function hasBPrefix(name) {
+  return /^բ\s+/u.test(normalizeName(name));
+}
+
+function findWorkerByLoginName(workers, loginName) {
+  const normalizedInput = normalizeNameForMatch(loginName);
+  const exact = workers.find((worker) => normalizeNameForMatch(worker.name) === normalizedInput);
+  if (exact) return exact;
+
+  if (!hasBPrefix(loginName)) {
+    const prefixedKey = normalizeNameForMatch(`բ ${loginName}`);
+    const prefixedMatches = workers.filter(
+      (worker) => normalizeNameForMatch(worker.name) === prefixedKey
+    );
+    if (prefixedMatches.length === 1) return prefixedMatches[0];
+  }
+
+  return null;
 }
 
 function buildWorkerPassword(name, id) {
@@ -36,6 +54,12 @@ function matchesWorkerPassword(worker, password) {
     buildWorkerPassword(worker.name, worker.id),
     `${worker.name}${worker.id}123`,
   ]);
+
+  const workerKey = normalizeNameForMatch(worker.name);
+  if (hasBPrefix(worker.name)) {
+    variants.add(`${workerKey.replace(/^բ\s+/, '')}${worker.id}123`);
+  }
+
   return variants.has(trimmed) || variants.has(normalizeName(trimmed));
 }
 
@@ -123,8 +147,7 @@ export function findWorkerForLogin(workers, loginName, loginPassword) {
     return { ok: false, reason: 'no_data' };
   }
 
-  const normalizedInput = normalizeNameForMatch(name);
-  const user = workers.find((worker) => normalizeNameForMatch(worker.name) === normalizedInput);
+  const user = findWorkerByLoginName(workers, name);
 
   if (!user) {
     return { ok: false, reason: 'not_found' };
