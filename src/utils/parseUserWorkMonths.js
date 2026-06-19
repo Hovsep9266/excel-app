@@ -418,6 +418,20 @@ function findClassicUserRow(rows, startIndex, endIndex, userName) {
   return null;
 }
 
+function findClassicMoneyUserRow(rows, startIndex, endIndex, userName) {
+  const targetName = normalizeNameForMatch(userName);
+  for (let rowIndex = startIndex; rowIndex < endIndex; rowIndex += 1) {
+    const row = rows[rowIndex];
+    if (isMonthHeaderRow(row)) continue;
+
+    const name = formatCellValue(row[0]);
+    if (!name || SKIP_ROW_LABELS.has(name) || isSectionLabel(name)) continue;
+    if (normalizeNameForMatch(name) !== targetName) continue;
+    if (rowHasSummaryValues(row, [])) return row;
+  }
+  return null;
+}
+
 function getSummaryRowName(row) {
   const nameInB = formatCellValue(row?.[1]);
   const nameInA = formatCellValue(row?.[0]);
@@ -601,7 +615,7 @@ function parseClassicMonthBlock(rows, hoursHeaderIndex, moneyHeaderIndex, nextBl
 
   const moneyRow =
     moneyHeaderIndex !== undefined
-      ? findClassicUserRow(rows, moneyHeaderIndex + 1, nextBlockStart, userName)
+      ? findClassicMoneyUserRow(rows, moneyHeaderIndex + 1, nextBlockStart, userName)
       : null;
 
   return {

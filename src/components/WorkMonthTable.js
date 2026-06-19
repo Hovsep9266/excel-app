@@ -3,7 +3,17 @@ import { useI18n } from '../i18n/i18n';
 import { formatAmountTotal, formatHoursTotal, parseNumericCell, sumNumericCells } from '../utils/formatCellValue';
 import { translateMonthName } from '../utils/translateMonthName';
 
-function MonthBlockTable({ monthLabel, monthKey, days, hours, hoursTotal, amounts, hoursLabel, amountLabel, totalLabel }) {
+function ClassicMonthTable({
+  monthLabel,
+  monthKey,
+  days,
+  hours,
+  hoursTotal,
+  amounts,
+  hoursLabel,
+  amountLabel,
+  totalLabel,
+}) {
   const dayCount = days.length;
   const alignedHours = hours.slice(0, dayCount);
   const alignedAmounts = amounts.slice(0, dayCount);
@@ -14,7 +24,7 @@ function MonthBlockTable({ monthLabel, monthKey, days, hours, hoursTotal, amount
   const amountTotal = formatAmountTotal(sumNumericCells(alignedAmounts));
 
   return (
-    <table className="work-month-table">
+    <table className="work-month-table work-month-table--classic">
       <thead>
         <tr>
           <th className="work-month-name">{monthLabel}</th>
@@ -117,7 +127,7 @@ function WorkMonthTable({ blocks }) {
                   amountTotal={block.amountTotal}
                 />
               ) : (
-                <MonthBlockTable
+                <ClassicMonthTable
                   {...tableProps}
                   hours={block.hours}
                   hoursTotal={block.hoursTotal}

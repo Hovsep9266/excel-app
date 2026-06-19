@@ -59,6 +59,25 @@ describe('parseUserWorkMonths summary layout', () => {
     expect(mayBlock.amounts).toEqual(['100', '100', '', '', '']);
   });
 
+  it('parses classic money rows without hourly rate in column B', () => {
+    const hoursHeader = buildDayHeaderRow(5);
+    hoursHeader[0] = 'Փետրվար';
+    const moneyHeader = buildDayHeaderRow(5);
+    moneyHeader[0] = 'Փետրվար';
+    const rows = [
+      hoursHeader,
+      ['Արամ', 16, '', 8, 8, '', '', '', 16],
+      moneyHeader,
+      ['Արամ', '', '', '6.7', '18', '', '', '', '24.7'],
+    ];
+
+    const blocks = parseUserWorkMonths(rows, 'Արամ');
+    expect(blocks).toHaveLength(1);
+    expect(blocks[0].layout).toBe('classic');
+    expect(blocks[0].hours).toEqual(['8', '8', '', '', '']);
+    expect(blocks[0].amounts).toEqual(['6.7', '18', '', '', '']);
+  });
+
   it('parses June+ from column B with sums only', () => {
     const blocks = parseUserWorkMonths(classicRows, 'Արամ');
     expect(blocks).toHaveLength(2);
