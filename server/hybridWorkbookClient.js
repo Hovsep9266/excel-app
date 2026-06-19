@@ -17,6 +17,108 @@ function hasLocalFileConfig() {
   return Boolean(process.env.EXCEL_LOCAL_PATH);
 }
 
+function preferShareLink() {
+  const raw = String(process.env.EXCEL_PREFER_SHARE_LINK || '').trim().toLowerCase();
+  return raw === '1' || raw === 'true' || raw === 'yes';
+}
+
+async function probeConfiguredSources({ sheet, range }) {
+  const probes = [];
+
+  if (hasLocalFileConfig()) {
+    probes.push(
+      getWorksheetRangeFromLocalFile({ sheet, range })
+        .then((value) => ({
+          sourceUsed: 'local_file',
+          ok: true,
+          rowCount: value.rowCount || 0,
+          columnCount: value.columnCount || 0,
+          fileLastModifiedAt: value.fileLastModifiedAt,
+          filePath: value.filePath,
+        }))
+        .catch((error) => ({
+          sourceUsed: 'local_file',
+          ok: false,
+          error: error.message || 'Local file read failed',
+        }))
+    );
+  }
+
+  if (hasShareLinkConfig()) {
+    probes.push(
+      getWorksheetRangeFromShareLink({ sheet, range })
+        .then((value) => ({
+          sourceUsed: 'share_link',
+          ok: true,
+          rowCount: value.rowCount || 0,
+          columnCount: value.columnCount || 0,
+          fileLastModifiedAt: value.fileLastModifiedAt,
+        }))
+        .catch((error) => ({
+          sourceUsed: 'share_link',
+          ok: false,
+          error: error.message || 'Share link read failed',
+        }))
+    );
+  }
+
+  if (canAccessCloudWorkbook()) {
+    probes.push(
+      getWorksheetRangeFromGraphFile({ sheet, range })
+        .then((value) => ({
+          sourceUsed: 'graph',
+          ok: true,
+          rowCount: value.rowCount || 0,
+          columnCount: value.columnCount || 0,
+          fileLastModifiedAt: value.fileLastModifiedAt,
+        }))
+        .catch((error) => ({
+          sourceUsed: 'graph',
+          ok: false,
+          error: error.message || 'Graph read failed',
+        }))
+    );
+  }
+
+  const results = await Promise.all(probes);
+  return results;
+}
+
+function pickBestSource(successful) {
+  const share = successful.find((entry) => entry.sourceUsed === 'share_link');
+  const graph = successful.find((entry) => entry.sourceUsed === 'graph');
+  const local = successful.find((entry) => entry.sourceUsed === 'local_file');
+
+  if (preferShareLink() && share) {
+    return share;
+  }
+
+  if (graph && local && graph.rowCount > local.rowCount) {
+    return graph;
+  }
+
+  if (share && local && share.rowCount > local.rowCount) {
+    return share;
+  }
+
+  return successful.reduce((best, current) => {
+    const bestRows = best.rowCount || 0;
+    const currentRows = current.rowCount || 0;
+    if (currentRows !== bestRows) {
+      return currentRows > bestRows ? current : best;
+    }
+    const priority = { graph: 3, share_link: 2, local_file: 1 };
+    const bestPriority = priority[best.sourceUsed] || 0;
+    const currentPriority = priority[current.sourceUsed] || 0;
+    if (currentPriority !== bestPriority) {
+      return currentPriority > bestPriority ? current : best;
+    }
+    const bestTime = toTimestamp(best.fileLastModifiedAt);
+    const currentTime = toTimestamp(current.fileLastModifiedAt);
+    return currentTime >= bestTime ? current : best;
+  });
+}
+
 async function getWorksheetRangeHybrid({ sheet, range }) {
   const sources = [];
 
@@ -62,11 +164,19 @@ async function getWorksheetRangeHybrid({ sheet, range }) {
     throw results[0]?.reason || new Error('All Excel sources failed');
   }
 
-  return successful.reduce((newest, current) => {
-    const newestTime = toTimestamp(newest.fileLastModifiedAt);
-    const currentTime = toTimestamp(current.fileLastModifiedAt);
-    return currentTime >= newestTime ? current : newest;
-  });
+  return pickBestSource(successful);
+}
+
+async function getHybridSourceStatus({ sheet, range }) {
+  const probes = await probeConfiguredSources({ sheet, range });
+  const successful = probes.filter((entry) => entry.ok);
+  const selected = successful.length ? pickBestSource(successful) : null;
+
+  return {
+    probes,
+    selectedSource: selected?.sourceUsed || null,
+    selectedRowCount: selected?.rowCount || 0,
+  };
 }
 
 async function checkHybridWorkbookAccess() {
@@ -79,6 +189,7 @@ async function checkHybridWorkbookAccess() {
 
 module.exports = {
   checkHybridWorkbookAccess,
+  getHybridSourceStatus,
   getWorksheetRangeHybrid,
   hasLocalFileConfig,
   hasShareLinkConfig,

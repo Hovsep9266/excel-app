@@ -22,6 +22,8 @@ services:
         value: ""
       - key: PORT
         value: "4000"
+      - key: EXCEL_PREFER_SHARE_LINK
+        value: "true"
       - key: EXCEL_SHARE_URL
         sync: false
       - key: FRONTEND_URL

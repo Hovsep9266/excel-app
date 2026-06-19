@@ -3,6 +3,10 @@ import { useI18n } from '../i18n/i18n';
 import { formatAmountTotal, formatHoursTotal, parseNumericCell, sumNumericCells } from '../utils/formatCellValue';
 import { translateMonthName } from '../utils/translateMonthName';
 
+function isWeekendDay(day) {
+  return Number(day) % 7 === 0;
+}
+
 function MonthBlockTable({ monthLabel, monthKey, days, hours, hoursTotal, amounts, hoursLabel, amountLabel, totalLabel }) {
   const dayCount = days.length;
   const alignedHours = hours.slice(0, dayCount);
@@ -50,6 +54,46 @@ function MonthBlockTable({ monthLabel, monthKey, days, hours, hoursTotal, amount
   );
 }
 
+function SummaryMonthBlockTable({ monthLabel, monthKey, days, amounts, amountTotal, amountLabel, totalLabel }) {
+  const dayCount = days.length;
+  const alignedAmounts = amounts.slice(0, dayCount);
+  const amountTotalDisplay =
+    amountTotal || formatAmountTotal(sumNumericCells(alignedAmounts));
+
+  return (
+    <table className="work-month-table work-month-table--summary">
+      <thead>
+        <tr>
+          <th className="work-month-name work-month-name--summary">{monthLabel}</th>
+          {days.map((day, index) => (
+            <th
+              key={`day-${monthKey}-${index}`}
+              className={`work-day-head${isWeekendDay(day) ? ' work-day-head--weekend' : ''}`}
+            >
+              {day}
+            </th>
+          ))}
+          <th className="work-total-head">{totalLabel}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr className="work-amount-row work-amount-row--summary">
+          <th className="work-row-label">{amountLabel}</th>
+          {alignedAmounts.map((value, index) => (
+            <td
+              key={`amount-${monthKey}-${index}`}
+              className={`${value ? '' : 'work-cell-empty'}${isWeekendDay(days[index]) ? ' work-day-weekend' : ''}`}
+            >
+              {value}
+            </td>
+          ))}
+          <td className="work-total-cell">{amountTotalDisplay}</td>
+        </tr>
+      </tbody>
+    </table>
+  );
+}
+
 function WorkMonthTable({ blocks }) {
   const { t, lang } = useI18n();
 
@@ -63,23 +107,38 @@ function WorkMonthTable({ blocks }) {
 
   return (
     <div className="work-table-wrap">
-      {blocks.map((block, index) => (
-        <section key={`${block.month}-${index}`} className="work-month-section">
-          <div className="work-table-x-scroll">
-            <MonthBlockTable
-              monthKey={block.month}
-              monthLabel={translateMonthName(block.month, lang)}
-              days={block.days}
-              hours={block.hours}
-              hoursTotal={block.hoursTotal}
-              amounts={block.amounts}
-              hoursLabel={t('hoursLabel')}
-              amountLabel={t('amountLabel')}
-              totalLabel={t('totalLabel')}
-            />
-          </div>
-        </section>
-      ))}
+      {blocks.map((block, index) => {
+        const monthLabel = translateMonthName(block.month, lang);
+        const tableProps = {
+          monthKey: block.month,
+          monthLabel,
+          days: block.days,
+          amountLabel: t('amountLabel'),
+          totalLabel: t('totalLabel'),
+        };
+
+        return (
+          <section key={`${block.month}-${index}`} className="work-month-section">
+            <div className="work-table-x-scroll">
+              {block.layout === 'summary' ? (
+                <SummaryMonthBlockTable
+                  {...tableProps}
+                  amounts={block.amounts}
+                  amountTotal={block.amountTotal}
+                />
+              ) : (
+                <MonthBlockTable
+                  {...tableProps}
+                  hours={block.hours}
+                  hoursTotal={block.hoursTotal}
+                  amounts={block.amounts}
+                  hoursLabel={t('hoursLabel')}
+                />
+              )}
+            </div>
+          </section>
+        );
+      })}
     </div>
   );
 }

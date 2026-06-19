@@ -71,6 +71,21 @@ export function getMonthIndex(rawMonth) {
   return MONTH_ALIASES[key];
 }
 
+/** June and later months use the summary layout (names in column B, sums only). */
+export function isSummaryMonth(monthNameOrIndex) {
+  const index =
+    typeof monthNameOrIndex === 'number' ? monthNameOrIndex : getMonthIndex(monthNameOrIndex);
+  return index !== undefined && index >= 5;
+}
+
+export function canonicalMonthName(rawMonth) {
+  const formatted = String(rawMonth || '').trim();
+  if (!formatted) return '';
+  const index = getMonthIndex(formatted);
+  if (index === undefined) return formatted;
+  return messages.hy?.monthNames?.[index] || formatted;
+}
+
 /** When a copied month block still has the previous month name, advance to the next month. */
 export function resolveSequentialMonthName(rawMonth, previousResolvedMonth) {
   const formatted = String(rawMonth || '').trim();
@@ -85,7 +100,7 @@ export function resolveSequentialMonthName(rawMonth, previousResolvedMonth) {
     return messages.hy?.monthNames?.[nextIndex] || formatted;
   }
 
-  return formatted;
+  return messages.hy?.monthNames?.[index] || formatted;
 }
 
 export function translateMonthName(rawMonth, lang) {

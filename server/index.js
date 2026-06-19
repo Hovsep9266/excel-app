@@ -19,6 +19,7 @@ const {
 } = require('./localWorkbookClient');
 const {
   getWorksheetRangeHybrid,
+  getHybridSourceStatus,
   hasLocalFileConfig,
   hasShareLinkConfig,
 } = require('./hybridWorkbookClient');
@@ -307,6 +308,17 @@ app.get('/api/excel/source', async (req, res) => {
           shareLinkError = error.message || 'Share link failed';
         }
       }
+      let hybridStatus = null;
+      if (source === 'hybrid') {
+        try {
+          hybridStatus = await getHybridSourceStatus({
+            sheet: process.env.EXCEL_DEFAULT_SHEET || 'աշխատող',
+            range: process.env.EXCEL_DEFAULT_RANGE || '',
+          });
+        } catch (error) {
+          hybridStatus = { error: error.message || 'Hybrid probe failed' };
+        }
+      }
       return res.json({
         ok: true,
         source,
@@ -314,6 +326,10 @@ app.get('/api/excel/source', async (req, res) => {
         shareUrlConfigured: hasShareLinkConfig(),
         onlineExcelReady: shareLinkOk,
         shareLinkError: shareLinkError || undefined,
+        preferShareLink: String(process.env.EXCEL_PREFER_SHARE_LINK || '').toLowerCase() === 'true',
+        hybridStatus,
+        note:
+          'If you have two files named eco clim himnakan (Hoso vs ISO ISO), set EXCEL_SHARE_URL to ISO ISO public link and EXCEL_PREFER_SHARE_LINK=true.',
       });
     }
     return res.json({ ok: true, source, shareUrlConfigured: hasShareLinkConfig() });

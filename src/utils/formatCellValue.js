@@ -7,6 +7,15 @@ export function formatCellValue(value) {
 export function parseNumericCell(value) {
   const text = formatCellValue(value);
   if (!text) return 0;
+
+  const parts = text.split(/\s+/).filter(Boolean);
+  if (parts.length > 1) {
+    return parts.reduce((total, part) => {
+      const numeric = Number(part.replace(',', '.'));
+      return Number.isNaN(numeric) ? total : total + numeric;
+    }, 0);
+  }
+
   const numeric = Number(text.replace(',', '.'));
   return Number.isNaN(numeric) ? 0 : numeric;
 }
