@@ -88,21 +88,6 @@
   font-weight: 600;
 }
 
-.work-month-table--summary .work-month-name--summary {
-  background: rgba(37, 99, 235, 0.35);
-  color: #e0f2fe;
-}
-
-.work-day-head--weekend,
-.work-day-weekend {
-  background: rgba(148, 163, 184, 0.22) !important;
-}
-
-.work-month-table--summary .work-amount-row--summary .work-row-label,
-.work-month-table--summary .work-amount-row--summary td {
-  border-top: none;
-}
-
 .work-month-name {
   min-width: 88px;
   text-align: left;

@@ -3,10 +3,6 @@ import { useI18n } from '../i18n/i18n';
 import { formatAmountTotal, formatHoursTotal, parseNumericCell, sumNumericCells } from '../utils/formatCellValue';
 import { translateMonthName } from '../utils/translateMonthName';
 
-function isWeekendDay(day) {
-  return Number(day) % 7 === 0;
-}
-
 function MonthBlockTable({ monthLabel, monthKey, days, hours, hoursTotal, amounts, hoursLabel, amountLabel, totalLabel }) {
   const dayCount = days.length;
   const alignedHours = hours.slice(0, dayCount);
@@ -61,15 +57,12 @@ function SummaryMonthBlockTable({ monthLabel, monthKey, days, amounts, amountTot
     amountTotal || formatAmountTotal(sumNumericCells(alignedAmounts));
 
   return (
-    <table className="work-month-table work-month-table--summary">
+    <table className="work-month-table">
       <thead>
         <tr>
-          <th className="work-month-name work-month-name--summary">{monthLabel}</th>
+          <th className="work-month-name">{monthLabel}</th>
           {days.map((day, index) => (
-            <th
-              key={`day-${monthKey}-${index}`}
-              className={`work-day-head${isWeekendDay(day) ? ' work-day-head--weekend' : ''}`}
-            >
+            <th key={`day-${monthKey}-${index}`} className="work-day-head">
               {day}
             </th>
           ))}
@@ -77,13 +70,10 @@ function SummaryMonthBlockTable({ monthLabel, monthKey, days, amounts, amountTot
         </tr>
       </thead>
       <tbody>
-        <tr className="work-amount-row work-amount-row--summary">
+        <tr className="work-amount-row">
           <th className="work-row-label">{amountLabel}</th>
           {alignedAmounts.map((value, index) => (
-            <td
-              key={`amount-${monthKey}-${index}`}
-              className={`${value ? '' : 'work-cell-empty'}${isWeekendDay(days[index]) ? ' work-day-weekend' : ''}`}
-            >
+            <td key={`amount-${monthKey}-${index}`} className={value ? '' : 'work-cell-empty'}>
               {value}
             </td>
           ))}

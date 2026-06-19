@@ -10,7 +10,11 @@ import {
 const SKIP_ROW_LABELS = new Set(['ԸՆԴՀ', 'ծախս', 'կետ', 'Hos']);
 
 function normalizeName(value) {
-  return String(value || '').trim().toLowerCase();
+  return String(value || '').trim().toLowerCase().replace(/\s+/g, ' ');
+}
+
+function normalizeDisplayName(value) {
+  return String(value || '').trim().replace(/\s+/g, ' ');
 }
 
 function normalizeNameForMatch(value) {
@@ -189,11 +193,7 @@ function isMonthHeaderRow(row) {
   if (month && /^\d+$/.test(month)) return false;
   if (month && isSectionLabel(month)) return false;
 
-  // June sub-tables put the department name in column A on the day-header row.
-  if (!month) return true;
-  if (isGroupLabel(month)) return true;
-
-  return isKnownMonthName(month);
+  return true;
 }
 
 function findDayColumnStart(headerRow) {
@@ -425,12 +425,7 @@ function getSummaryRowCode(row, name) {
 
 function isSummaryUserRow(row) {
   if (!isSummaryStyleRow(row)) return false;
-
-  const name = getSummaryRowName(row);
-  const code = getSummaryRowCode(row, name);
-  if (isNumericCode(code)) return true;
-
-  return rowHasSummaryValues(row, []);
+  return Boolean(getSummaryRowName(row));
 }
 
 function findSummaryUserRowsWithIndex(rows, startIndex, endIndex, userName) {
@@ -547,11 +542,12 @@ function registerWorker(workers, seenNames, nextIdRef, name, code) {
   if (!normalized || seenNames.has(normalized)) return;
 
   seenNames.add(normalized);
+  const displayName = normalizeDisplayName(name);
   const rate = formatCellValue(code);
   workers.push({
     id: nextIdRef.value,
-    name,
-    password: buildWorkerPassword(name, nextIdRef.value),
+    name: displayName,
+    password: buildWorkerPassword(displayName, nextIdRef.value),
     otherData: rate ? [rate] : [],
   });
   nextIdRef.value += 1;

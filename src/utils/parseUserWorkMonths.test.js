@@ -463,4 +463,29 @@ describe('parseUserWorkMonths summary layout', () => {
     const harutBlocks = parseUserWorkMonths(rows, 'Հարութ');
     expect(harutBlocks.some((block) => block.month === 'Հունիս')).toBe(true);
   });
+
+  it('shows June for users listed in June even without day values yet', () => {
+    const monthTitle = new Array(40).fill('');
+    monthTitle[0] = 'ՀՈՒՆԻՍ';
+    const dayHeader = buildDayHeaderFromColumnD(5);
+    dayHeader[0] = 'Ավանի';
+
+    const rows = [
+      monthTitle,
+      dayHeader,
+      ['', 'Լյով', '', '', '', ''],
+      ['', 'բ Մարկ', '', '', '', ''],
+      ['', 'Նավո', '', '15', '', ''],
+    ];
+
+    expect(extractWorkersFromSheet(rows).some((worker) => worker.name === 'Լյով')).toBe(true);
+
+    const lyovBlocks = parseUserWorkMonths(rows, 'Լյով');
+    expect(lyovBlocks).toHaveLength(1);
+    expect(lyovBlocks[0].month).toBe('Հունիս');
+
+    const markBlocks = parseUserWorkMonths(rows, 'Մարկ');
+    expect(markBlocks).toHaveLength(1);
+    expect(markBlocks[0].month).toBe('Հունիս');
+  });
 });
