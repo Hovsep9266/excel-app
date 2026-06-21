@@ -17,15 +17,19 @@ function MusicIcon({ playing }) {
   );
 }
 
-function MenuMusicControls({ t, hasTracks, isPlaying, onToggle }) {
+function MenuMusicControls({ t, hasTracks, isPlaying, disabled = false, onToggle }) {
   if (!hasTracks) return null;
 
   return (
     <button
       type="button"
-      className={`menu-music-btn${isPlaying ? ' menu-music-btn--playing' : ''}`}
-      onClick={onToggle}
+      className={`menu-music-btn${isPlaying ? ' menu-music-btn--playing' : ''}${
+        disabled ? ' menu-music-btn--disabled' : ''
+      }`}
+      onClick={disabled ? undefined : onToggle}
+      disabled={disabled}
       aria-pressed={isPlaying}
+      aria-disabled={disabled}
     >
       <MusicIcon playing={isPlaying} />
       <span>{isPlaying ? t('musicPause') : t('musicPlay')}</span>

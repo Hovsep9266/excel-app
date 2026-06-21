@@ -63,11 +63,16 @@ export function useMenuMusic(trackUrls) {
     audio.play().catch(() => {});
   }, []);
 
+  const pausePlayback = useCallback(() => {
+    audioRef.current?.pause();
+  }, []);
+
   const hasTracks = trackUrls.length > 0;
 
   return {
     hasTracks,
     isPlaying,
     togglePlayback,
+    pausePlayback,
   };
 }

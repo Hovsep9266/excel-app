@@ -12,6 +12,12 @@
   -webkit-transform: translateZ(0);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+  opacity: 1;
+  transition: opacity 900ms ease;
+}
+
+.app-wind-bg--faded {
+  opacity: 0;
 }
 
 .app-wind-bg-slides {

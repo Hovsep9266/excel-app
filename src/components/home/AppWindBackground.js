@@ -51,9 +51,12 @@ const SLIDE_FADE_KEYFRAMES = `
   }
 `;
 
-function AppWindBackground() {
+function AppWindBackground({ visible = true }) {
   return (
-    <div className="app-wind-bg" aria-hidden="true">
+    <div
+      className={`app-wind-bg${visible ? '' : ' app-wind-bg--faded'}`}
+      aria-hidden="true"
+    >
       <style>{SLIDE_FADE_KEYFRAMES}</style>
       <div
         className="app-wind-bg-slides"

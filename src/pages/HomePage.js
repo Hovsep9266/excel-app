@@ -12,13 +12,16 @@ import LogoutConfirmModal from '../components/home/LogoutConfirmModal';
 import ProfileModal from '../components/home/ProfileModal';
 import RulesModal from '../components/home/RulesModal';
 import UserMenuModal from '../components/home/UserMenuModal';
+import MenuVideoBackground from '../components/home/MenuVideoBackground';
 import SiteFooterBar from '../components/home/SiteFooterBar';
 import UserDataSection from '../components/home/UserDataSection';
 import { menuMusicTracks } from '../constants/menuMusic';
+import { getMenuVideoConfig } from '../constants/menuVideo';
 import { useAnnouncements } from '../hooks/useAnnouncements';
 import { useExcelRange } from '../hooks/useExcelRange';
 import { useHomeAuth } from '../hooks/useHomeAuth';
 import { useMenuMusic } from '../hooks/useMenuMusic';
+import { useMenuVideoBackground } from '../hooks/useMenuVideoBackground';
 import { useI18n } from '../i18n/i18n';
 import { canUserSeeAnnouncement, isAnnouncementAdmin, normalizeUserKey } from '../utils/isAnnouncementAdmin';
 
@@ -28,6 +31,8 @@ function HomePage() {
   const auth = useHomeAuth({ tableData, t });
   const announcements = useAnnouncements();
   const menuMusic = useMenuMusic(menuMusicTracks);
+  const menuVideo = useMemo(() => getMenuVideoConfig(), []);
+  const menuVideoBackground = useMenuVideoBackground();
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
@@ -37,6 +42,7 @@ function HomePage() {
   const [languagePickOpen, setLanguagePickOpen] = useState(false);
   const [tablesExpanded, setTablesExpanded] = useState(true);
   const [announcementBannerHeight, setAnnouncementBannerHeight] = useState(0);
+  const [videoPlaybackControls, setVideoPlaybackControls] = useState(null);
 
   const currentLangLabel = useMemo(() => {
     return languageOptions.find((opt) => opt.id === lang)?.label || lang;
@@ -78,6 +84,8 @@ function HomePage() {
     setAnnouncementOpen(false);
     setLogoutConfirmOpen(false);
     setLanguagePickOpen(false);
+    menuVideoBackground.resetVideo();
+    setVideoPlaybackControls(null);
   };
 
   const handleLogoutRequest = () => {
@@ -87,6 +95,17 @@ function HomePage() {
   };
 
   const hasVisibleAnnouncement = Boolean(auth.currentUser && visibleAnnouncementText);
+
+  const isMusicBlocked =
+    menuVideoBackground.videoVisible &&
+    Boolean(videoPlaybackControls) &&
+    !videoPlaybackControls.isPaused;
+
+  useEffect(() => {
+    if (isMusicBlocked) {
+      menuMusic.pausePlayback();
+    }
+  }, [isMusicBlocked, menuMusic.pausePlayback]);
 
   useEffect(() => {
     if (!hasVisibleAnnouncement) {
@@ -99,7 +118,17 @@ function HomePage() {
       className={`app-shell${hasVisibleAnnouncement ? ' app-shell--with-announcement' : ''}`}
       style={{ '--announcement-banner-height': `${announcementBannerHeight}px` }}
     >
-      <AppWindBackground />
+      <AppWindBackground visible={!menuVideoBackground.videoVisible} />
+      {menuVideoBackground.videoMounted && menuVideo.hasVideo ? (
+        <MenuVideoBackground
+          youtubeId={menuVideo.youtubeId}
+          fileSrc={menuVideo.fileSrc}
+          startSeconds={menuVideo.startSeconds}
+          visible={menuVideoBackground.videoVisible}
+          onEnded={menuVideoBackground.closeVideo}
+          onRegisterControls={setVideoPlaybackControls}
+        />
+      ) : null}
       <AuthLoadingOverlay visible={auth.showAuthLoading && !auth.currentUser} loadingText={t('loading')} />
       <IntroOverlay visible={auth.showIntro} />
       {hasVisibleAnnouncement ? (
@@ -186,7 +215,15 @@ function HomePage() {
               }}
               musicHasTracks={menuMusic.hasTracks}
               musicIsPlaying={menuMusic.isPlaying}
+              musicDisabled={isMusicBlocked}
               onToggleMusic={menuMusic.togglePlayback}
+              hasMenuVideo={menuVideo.hasVideo}
+              onVideo={() => {
+                menuMusic.pausePlayback();
+                menuVideoBackground.openVideo();
+                setMenuOpen(false);
+                setLanguagePickOpen(false);
+              }}
             />
 
             <ProfileModal
@@ -233,7 +270,18 @@ function HomePage() {
             />
           </div>
         )}
-        <SiteFooterBar t={t} />
+        <SiteFooterBar
+          t={t}
+          videoControls={
+            menuVideoBackground.videoMounted && menuVideoBackground.videoVisible
+              ? videoPlaybackControls
+              : null
+          }
+          onVideoExit={() => {
+            menuVideoBackground.closeVideo();
+            setVideoPlaybackControls(null);
+          }}
+        />
       </div>
     </main>
   );

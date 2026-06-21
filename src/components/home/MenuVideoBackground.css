@@ -1,0 +1,54 @@
+.menu-video-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  background: #020617;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 900ms ease;
+}
+
+.menu-video-bg--visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.menu-video-bg__media,
+.menu-video-bg__youtube-target,
+.menu-video-bg__file-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.menu-video-bg__media {
+  overflow: hidden;
+}
+
+.menu-video-bg__media iframe {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100vw;
+  height: 56.25vw;
+  min-height: 100vh;
+  min-height: 100dvh;
+  min-width: 177.78vh;
+  transform: translate(-50%, -50%);
+  border: 0;
+  pointer-events: none;
+}
+
+.menu-video-bg__file-video {
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.menu-video-bg__shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(2, 6, 23, 0.15), rgba(2, 6, 23, 0.45));
+  pointer-events: none;
+}

@@ -20,7 +20,10 @@ function UserMenuModal({
   onSelectLanguage,
   musicHasTracks,
   musicIsPlaying,
+  musicDisabled = false,
   onToggleMusic,
+  hasMenuVideo,
+  onVideo,
 }) {
   if (!open) return null;
 
@@ -61,8 +64,15 @@ function UserMenuModal({
             t={t}
             hasTracks={musicHasTracks}
             isPlaying={musicIsPlaying}
+            disabled={musicDisabled}
             onToggle={onToggleMusic}
           />
+
+          {hasMenuVideo ? (
+            <button className="user-menu-modal-row" type="button" onClick={onVideo}>
+              {t('menuVideo')}
+            </button>
+          ) : null}
 
           <div className="user-menu-modal-section">
             <div className="user-menu-modal-section-label">{t('menuLanguage')}</div>

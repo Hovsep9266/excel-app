@@ -4,6 +4,35 @@ import { buildObjectsFromColumnA } from '../utils/buildColumnAObjects';
 import { findWorkerForLogin, parseUserWorkMonths } from '../utils/parseUserWorkMonths';
 import { AUTH_STORAGE_KEY } from '../constants/authStorage';
 
+function workerSnapshot(worker) {
+  return {
+    id: worker.id,
+    name: worker.name,
+    password: worker.password,
+    otherData: worker.otherData || [],
+  };
+}
+
+function workersEqual(left, right) {
+  if (!left || !right) return false;
+  return (
+    left.id === right.id &&
+    left.name === right.name &&
+    left.password === right.password &&
+    left.otherData.join('|') === right.otherData.join('|')
+  );
+}
+
+export function findWorkerSessionMatch(workers, session) {
+  if (!session || !workers.length) return null;
+
+  const byId = workers.find((worker) => worker.id === session.id);
+  if (byId) return byId;
+
+  const login = findWorkerForLogin(workers, session.name, session.password);
+  return login.ok ? login.user : null;
+}
+
 export function useHomeAuth({ tableData, t }) {
   const [loginName, setLoginName] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
@@ -23,6 +52,7 @@ export function useHomeAuth({ tableData, t }) {
   });
 
   const [showIntro, setShowIntro] = useState(false);
+  const showIntroOnLoginRef = useRef(false);
 
   const builtObjects = useMemo(() => buildObjectsFromColumnA(tableData), [tableData]);
   const userMonthBlocks = useMemo(() => {
@@ -48,7 +78,8 @@ export function useHomeAuth({ tableData, t }) {
       return undefined;
     }
 
-    if (!hadUserBefore) {
+    if (!hadUserBefore && showIntroOnLoginRef.current) {
+      showIntroOnLoginRef.current = false;
       setShowIntro(true);
       const introTimer = window.setTimeout(() => {
         setShowIntro(false);
@@ -75,30 +106,30 @@ export function useHomeAuth({ tableData, t }) {
 
     const user = result.user;
     setAuthError('');
+    showIntroOnLoginRef.current = true;
     setCurrentUser(user);
-    setSavedAuth({ id: user.id, name: user.name, password: user.password });
+    setSavedAuth(workerSnapshot(user));
   };
 
   useEffect(() => {
-    if (!currentUser) return;
-    const refreshedUser = builtObjects.find(
-      (item) => item.id === currentUser.id && item.name === currentUser.name
-    );
-    if (refreshedUser) {
-      setCurrentUser(refreshedUser);
+    if (!currentUser || !builtObjects.length) return;
+
+    const refreshedUser = findWorkerSessionMatch(builtObjects, currentUser);
+    if (!refreshedUser) {
+      setCurrentUser(null);
       return;
     }
-    setCurrentUser(null);
+
+    if (!workersEqual(workerSnapshot(currentUser), workerSnapshot(refreshedUser))) {
+      setCurrentUser(refreshedUser);
+      setSavedAuth(workerSnapshot(refreshedUser));
+    }
   }, [builtObjects, currentUser]);
 
   useEffect(() => {
-    if (currentUser || !savedAuth) return;
-    const restoredUser = builtObjects.find(
-      (item) =>
-        item.id === savedAuth.id &&
-        item.name === savedAuth.name &&
-        item.password === savedAuth.password
-    );
+    if (currentUser || !savedAuth || !builtObjects.length) return;
+
+    const restoredUser = findWorkerSessionMatch(builtObjects, savedAuth);
     if (restoredUser) {
       setCurrentUser(restoredUser);
     }
@@ -117,6 +148,7 @@ export function useHomeAuth({ tableData, t }) {
   }, [savedAuth]);
 
   const handleLogout = () => {
+    showIntroOnLoginRef.current = false;
     setCurrentUser(null);
     setSavedAuth(null);
     setLoginName('');

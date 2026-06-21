@@ -1,4 +1,6 @@
 .site-footer {
+  position: relative;
+  z-index: 110;
   margin-top: auto;
   margin-bottom: 0;
   padding: 14px 16px;
@@ -14,6 +16,13 @@
   flex-shrink: 0;
 }
 
+.site-footer--with-video {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  column-gap: 12px;
+}
+
 .app-container--logged-in .site-footer {
   margin-top: 20px;
 }
@@ -21,6 +30,15 @@
 .site-footer-left {
   display: flex;
   align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.site-footer-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   gap: 10px;
   flex-wrap: wrap;
 }
@@ -39,15 +57,89 @@
   color: rgba(226, 232, 240, 0.55);
 }
 
+.site-footer--with-video .site-footer-left {
+  justify-self: start;
+}
+
+.site-footer--with-video .site-footer-right {
+  justify-self: end;
+}
+
 .site-footer-right {
   color: rgba(226, 232, 240, 0.85);
   font-size: 0.92rem;
+  text-align: right;
+}
+
+.site-footer-video-btn {
+  border: 1px solid rgba(125, 211, 252, 0.35);
+  background: rgba(2, 6, 23, 0.45);
+  color: #e2e8f0;
+  padding: 8px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 0.92rem;
+  white-space: nowrap;
+}
+
+.site-footer-video-btn:hover {
+  color: #7dd3fc;
+  background: rgba(125, 211, 252, 0.12);
+}
+
+.site-footer-video-btn--exit {
+  border-color: rgba(252, 165, 165, 0.45);
+  color: #fecaca;
+}
+
+.site-footer-video-btn--exit:hover {
+  color: #fff1f2;
+  background: rgba(127, 29, 29, 0.35);
 }
 
 @media (max-width: 767px) {
-  .site-footer {
+  .site-footer:not(.site-footer--with-video) {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .site-footer--with-video {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: auto auto;
+    column-gap: 10px;
+    row-gap: 6px;
+    align-items: center;
+  }
+
+  .site-footer--with-video .site-footer-left {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .site-footer--with-video .site-footer-right {
+    grid-column: 1;
+    grid-row: 2;
+    text-align: left;
+    justify-self: start;
+  }
+
+  .site-footer--with-video .site-footer-center {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    justify-self: end;
+    align-self: center;
+    width: auto;
+    padding-bottom: 0;
+    justify-content: flex-end;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .site-footer-video-btn {
+    padding: 7px 12px;
+    font-size: 0.84rem;
   }
 
   .app-container--logged-in .site-footer {
