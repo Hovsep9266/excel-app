@@ -1,0 +1,102 @@
+.cursor-trail {
+  position: fixed;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.cursor-trail__slash {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 80px;
+  height: 10px;
+  opacity: 0;
+  transform-origin: center center;
+  will-change: transform, opacity, width;
+}
+
+.cursor-trail__slash-wind,
+.cursor-trail__slash-edge {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  pointer-events: none;
+}
+
+.cursor-trail__slash-wind {
+  width: 100%;
+  height: 7px;
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(186, 230, 253, 0.08) 14%,
+      rgba(125, 211, 252, 0.28) 36%,
+      rgba(224, 242, 254, 0.42) 50%,
+      rgba(125, 211, 252, 0.24) 64%,
+      rgba(186, 230, 253, 0.08) 86%,
+      transparent 100%);
+  filter: blur(2px);
+}
+
+.cursor-trail__slash-edge {
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(224, 242, 254, 0.35) 18%,
+      rgba(255, 255, 255, 0.98) 48%,
+      rgba(186, 230, 253, 0.85) 62%,
+      rgba(224, 242, 254, 0.25) 82%,
+      transparent 100%);
+  box-shadow:
+    0 0 8px rgba(186, 230, 253, 0.75),
+    0 0 16px rgba(103, 232, 249, 0.45);
+}
+
+.cursor-trail__slash[data-variant='gust'] .cursor-trail__slash-wind {
+  height: 5px;
+  opacity: 0.75;
+}
+
+.cursor-trail__slash[data-variant='gust'] .cursor-trail__slash-edge {
+  height: 1px;
+  opacity: 0.7;
+}
+
+.cursor-trail__slash[data-variant='heavy'] .cursor-trail__slash-wind {
+  height: 9px;
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(186, 230, 253, 0.12) 10%,
+      rgba(224, 242, 254, 0.45) 42%,
+      rgba(255, 255, 255, 0.35) 50%,
+      rgba(224, 242, 254, 0.45) 58%,
+      rgba(186, 230, 253, 0.12) 90%,
+      transparent 100%);
+}
+
+.cursor-trail__slash[data-variant='heavy'] .cursor-trail__slash-edge {
+  height: 2.5px;
+  box-shadow:
+    0 0 10px rgba(255, 255, 255, 0.85),
+    0 0 20px rgba(103, 232, 249, 0.8),
+    0 0 34px rgba(125, 211, 252, 0.35);
+}
+
+.cursor-trail--katana.cursor-trail--wind-active .cursor-trail__slash-edge {
+  mix-blend-mode: screen;
+}
+
+.cursor-trail--touch .cursor-trail__slash-wind {
+  height: 8px;
+}
+
+.cursor-trail--touch .cursor-trail__slash-edge {
+  height: 2.2px;
+  box-shadow:
+    0 0 12px rgba(255, 255, 255, 0.9),
+    0 0 22px rgba(103, 232, 249, 0.75);
+}

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import './HomePage.css';
 import '../styles/data-display.css';
 import AppWindBackground from '../components/home/AppWindBackground';
+import CursorTrailEffect from '../components/home/CursorTrailEffect';
 import AnnouncementBanner from '../components/home/AnnouncementBanner';
 import AnnouncementModal from '../components/home/AnnouncementModal';
 import AppLoggedHeader from '../components/home/AppLoggedHeader';
@@ -119,6 +120,7 @@ function HomePage() {
       style={{ '--announcement-banner-height': `${announcementBannerHeight}px` }}
     >
       <AppWindBackground visible={!menuVideoBackground.videoVisible} />
+      <CursorTrailEffect />
       {menuVideoBackground.videoMounted && menuVideo.hasVideo ? (
         <MenuVideoBackground
           youtubeId={menuVideo.youtubeId}

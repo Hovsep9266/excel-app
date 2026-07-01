@@ -267,11 +267,15 @@
   }
 
   .app-wind-bg-slide {
-    animation: wind-bg-slide-fade var(--slide-cycle, 40s) ease-in-out infinite;
-    animation-delay: var(--slide-delay, 0s);
-    will-change: opacity;
+    animation: none;
+    opacity: 0;
+    will-change: auto;
     transform: none;
     background-position: 50% center;
+  }
+
+  .app-wind-bg-slide:first-child {
+    opacity: 1;
   }
 
   .app-wind-bg-slide--mobile-left {

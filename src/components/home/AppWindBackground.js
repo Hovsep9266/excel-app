@@ -1,8 +1,5 @@
 import './AppWindBackground.css';
 
-const PETAL_COUNT = 10;
-const WIND_STREAK_LANES = 5;
-
 const BG_SLIDES = [
   'https://images.template.net/222766/darkness-background-edit-online.jpg',
   'https://www.wherewindsmeetgame.com/pc/gw/20251024112521/img/9_d298dbdf.jpg?image_process=format,jpg',
@@ -74,20 +71,6 @@ function AppWindBackground({ visible = true }) {
               '--slide-delay': `${index * SLIDE_INTERVAL_S}s`,
             }}
           />
-        ))}
-      </div>
-      <div className="app-wind-bg-mist" />
-      <div className="app-wind-bg-streaks">
-        {Array.from({ length: WIND_STREAK_LANES }, (_, index) => (
-          <span
-            key={index}
-            className={`wind-streak wind-streak--${index + 1}`}
-          />
-        ))}
-      </div>
-      <div className="app-wind-bg-petals">
-        {Array.from({ length: PETAL_COUNT }, (_, index) => (
-          <span key={index} className={`wind-petal wind-petal--${index + 1}`} />
         ))}
       </div>
     </div>
